@@ -4,7 +4,8 @@ import zipfile
 
 from multiprocessing import Pool
 import uiautomator2 as u2
-from Public.Devices import *
+from Public.Devices_new import *
+# from Public.Devices import *
 from Public.RunCases import RunCases
 from Public.ReportPath import ReportPath
 from Public.BasePage import BasePage
@@ -40,6 +41,7 @@ class Drivers:
             run.run(cases)
 
             base_page.set_original_ime()
+            base_page.unwatch_device()
             base_page.identify()
         except AssertionError as e:
             log.e('AssertionError, %s', e)
@@ -52,7 +54,7 @@ class Drivers:
             # devices = ATX_Server(ReadConfig().get_server_url()).online_devices()
             print('Checking available online devices from ATX-Server...')
             devices = get_online_devices()
-            print('\nThere has %s online devices in ATX-Server' % len(devices))
+            print('\nThere has %s alive devices in ATX-Server' % len(devices))
         elif method == 'IP':
             # get  devices from config devices list
             print('Checking available IP devices from config... ')
@@ -92,11 +94,3 @@ class Drivers:
 
         #  Generate statistics report  生成统计测试报告 将所有设备的报告在一个HTML中展示
         create_statistics_report(runs)
-
-# if __name__ == '__main__':
-    # print(ATX_Server(ReadConfig().get_url()).online_devices())
-    #
-    # print(get_devices())
-    # print(ReadConfig().get_atx_server('method'))
-
-

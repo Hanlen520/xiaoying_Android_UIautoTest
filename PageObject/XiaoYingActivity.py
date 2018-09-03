@@ -22,21 +22,20 @@ class Creation_Page(BasePage):
         '''点击VIP按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn_vip").click()
 
-
+    @teststep
+    def click_ad_btn(self):
+        self.d(resourceId="com.quvideo.xiaoying:id/btn_shuffle").click()
 
     @teststep
     def click_edit_btn(self):
         '''点击编辑按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn1").click()
 
-
     @teststep
     def click_camera_btn(self):
         '''点击拍摄按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn2").click()
-
-
-
+        time.sleep(4)  # 等待相机加载完成
 
     @teststep
     def click_view_pager_btn(self, text):
@@ -54,10 +53,9 @@ class Creation_Page(BasePage):
             self.d(text=text).click()
 
     @teststep
-    def click_btn_more(self):
+    def click_more_btn(self):
         '''点击更多草稿'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn_more").click()
-
 
     @teststep
     def click_studio_view(self, inst=0):
@@ -67,10 +65,22 @@ class Creation_Page(BasePage):
         '''
         self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_item").child(className='android.widget.ImageView')[inst].click()
 
+    @teststep
+    def click_find_btn(self):
+        self.d(resourceId="com.quvideo.xiaoying:id/img_find").click()
 
+    @teststep
+    def click_creation_btn(self):
+        self.d(resourceId="com.quvideo.xiaoying:id/img_creation").click()
+
+    @teststep
+    def click_my_btn(self):
+        self.d(resourceId="com.quvideo.xiaoying:id/img_studio").click()
 
 
 if __name__ == '__main__':
-    p = Creation_Page()
-    p.set_driver('10.0.30.35')
-    print(p.click_camera_btn())
+    from Public.Log import Log
+    Log().set_logger('udid', './log.log')
+    BasePage().set_driver('10.0.28.14')
+    Creation_Page().click_ad_btn()
+
