@@ -43,7 +43,9 @@ def get_online_devices():
         devices_list = []
         for i in tmp_list:
             if i.get():
+                print(i.get())
                 devices_list.append(i.get())
+
         return devices_list
     else:
         raise Exception('ATX-Server has no online device!!! ')
@@ -57,7 +59,7 @@ def connect_devices():
         r'(?P<serial>[^\s]+)\t(?P<status>device|offline)')
     matches = pattern.findall(output.decode())
     valid_serials = [m[0] for m in matches if m[1] == 'device']
-
+    print(valid_serials)
     if valid_serials:
         print('There has %s devices connected on PC: ' % len(valid_serials))
         pool = Pool(processes=len(valid_serials))
@@ -83,7 +85,9 @@ def check_alive(device):
             d.healthcheck()
             if d.alive:
                 print('%s is alive' % device['udid'])
-                return d.device_info
+                dict_tmp = d.device_info
+                dict_tmp['ip'] = device['ip']
+                return dict_tmp
             else:
                 print('%s is not alive' % device['udid'])
                 return None
@@ -95,8 +99,13 @@ def check_alive(device):
         if d.agent_alive:
             d.healthcheck()
             if d.alive:
-                print('%s is alive' % device)
-                return d.device_info
+                if re.match(r"(\d+\.\d+\.\d+\.\d)", device):
+                    dict_tmp = d.device_info
+                    dict_tmp['ip'] = device
+                    print('%s is alive' % device)
+                else:
+                    dict_tmp = d.device_info
+                return dict_tmp
             else:
                 print('%s is not alive' % device)
                 return None

@@ -56,18 +56,18 @@ class BasePage(object):
         '''
         file_name = os.path.basename(apk_path)
         dst = '/sdcard/' + file_name
-        print('start to install %s' % file_name)
+        print('pushing %s to device' % file_name)
         cls.d.push(apk_path, dst)
         print('start install %s' % dst)
         if cls.d.device_info['brand'] == 'vivo':
             '''Vivo 手机通过打开文件管理 安装app'''
             with cls.d.session("com.android.filemanager") as s:
-                s(resourceId="disk_info_parent").click()
-                s(resourceId="file_listView").scroll.to(textContains=file_name)
+                s(resourceId="com.android.filemanager:id/allfiles").click()
+                s(resourceId="com.android.filemanager:id/file_listView").scroll.to(textContains=file_name)
                 s(textContains=file_name).click()
-                s(resourceId="continue_button").click()
-                s(resourceId="ok_button").click()
-                print(s(resourceId="checked_result").get_text())
+                s(resourceId="com.android.packageinstaller:id/continue_button").click()
+                s(resourceId="com.android.packageinstaller:id/ok_button").click()
+                print(s(resourceId="com.android.packageinstaller:id/checked_result").get_text())
 
             # cls.d.app_stop('com.android.filemanager')
             # cls.d.app_start('com.android.filemanager')
@@ -82,8 +82,9 @@ class BasePage(object):
 
         elif cls.d.device_info['brand'] == 'OPPO':
             with cls.d.session("com.coloros.filemanager") as s:
-                s(text=u"所有文件").click()
-                s(className="android.widget.ListView").scroll.to(textContains=file_name)
+                s(resourceId="com.coloros.filemanager:id/action_file_browser").click()
+                s(className="android.app.ActionBar$Tab", instance=1).click()
+                s(resourceId="com.coloros.filemanager:id/viewPager").scroll.to(textContains=file_name)
                 s(textContains=file_name).click()
 
                 btn_done = cls.d(className="android.widget.Button", text=u"完成")
@@ -97,7 +98,9 @@ class BasePage(object):
                         # 通过偏移点击<安装>
                         s(resourceId=
                           "com.android.packageinstaller:id/bottom_button_layout"
-                          ).click(offset=(0.75, 0.5))
+                          ).click(offset=(0.5, 0.2))
+                    elif s(text=u"知道了").exists:
+                        raise Exception('已经安装高版本，请卸载重装')
                 btn_done.click()
             # cls.d.app_stop('com.coloros.filemanager')
             # cls.d.app_start('com.coloros.filemanager')
@@ -152,7 +155,6 @@ class BasePage(object):
         time.sleep(1)
         cls.d.press('back')
         time.sleep(1)
-
 
     @classmethod
     def identify(cls):
@@ -372,3 +374,11 @@ class BasePage(object):
     def find_element_by_swipe_right(self, value, element=None, steps=0.2, max_swipe=6):
         return self._find_element_by_swipe('right', value,
                                            element=element, steps=steps, max_swipe=max_swipe)
+
+
+
+
+if __name__ == '__main__':
+    url = 'http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html'
+    apk_path =download_apk(url)
+    print(apk_path)

@@ -44,13 +44,17 @@ class Creation_Page(BasePage):
         :param text: 次要功能位置的text名称
         :return:
         '''
-        self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toBeginning()
-        ele = self.d(text=text)
-        if ele.exists:
-            ele.click()
-        else:
-            self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toEnd()
-            self.d(text=text).click()
+        self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.forward(textContains=text)
+        self.d(text=text).click()
+
+        # self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toBeginning()
+        # time.sleep(0.5)
+        # ele = self.d(text=text)
+        # if ele.exists:
+        #     ele.click()
+        # else:
+        #     self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toEnd()
+        #     self.d(text=text).click()
 
     @teststep
     def click_more_btn(self):
@@ -81,6 +85,6 @@ class Creation_Page(BasePage):
 if __name__ == '__main__':
     from Public.Log import Log
     Log().set_logger('udid', './log.log')
-    BasePage().set_driver('10.0.28.14')
-    Creation_Page().click_ad_btn()
+    BasePage().set_driver('8DAQLNJNR4IZ6H5L')
+    Creation_Page().click_view_pager_btn('画中画编辑')
 

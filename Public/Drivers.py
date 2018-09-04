@@ -29,6 +29,8 @@ class Drivers:
 
         # set cls.driver, it must be call before operate on any page
         base_page = BasePage()
+        # base_page.set_driver(run.get_device()['ip'])
+
         if 'ip' in run.get_device():
             base_page.set_driver(run.get_device()['ip'])
         else:
@@ -86,6 +88,7 @@ class Drivers:
         for run in runs:
             pool.apply_async(self._run_cases,
                              args=(run, cases,))
+            time.sleep(2)
         print('Waiting for all runs done........ ')
         pool.close()
         pool.join()
