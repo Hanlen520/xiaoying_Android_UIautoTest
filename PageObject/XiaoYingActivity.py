@@ -44,17 +44,17 @@ class Creation_Page(BasePage):
         :param text: 次要功能位置的text名称
         :return:
         '''
-        self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.forward(textContains=text)
-        self.d(text=text).click()
+        # self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.forward(textContains=text)
+        # self.d(text=text).click()
 
-        # self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toBeginning()
-        # time.sleep(0.5)
-        # ele = self.d(text=text)
-        # if ele.exists:
-        #     ele.click()
-        # else:
-        #     self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toEnd()
-        #     self.d(text=text).click()
+        self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toBeginning()
+        time.sleep(0.5)
+        ele = self.d(text=text)
+        if ele.exists:
+            ele.click()
+        else:
+            self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toEnd()
+            self.d(text=text).click()
 
     @teststep
     def click_more_btn(self):

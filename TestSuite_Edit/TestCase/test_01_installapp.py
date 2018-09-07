@@ -9,7 +9,7 @@ from PageObject import XiaoYingActivity,CameraActivity
 from Public.Test_data import *
 
 apk_url = ReadConfig().get_apk_url()
-apk_path = download_apk()
+apk = get_apk()
 pkg_name = ReadConfig().get_pkg_name()
 
 
@@ -30,8 +30,8 @@ class App_install(unittest.TestCase, BasePage):
     def test_01_install(self):
         '''小影安装，并允许各种权限'''
         self.d.app_uninstall(pkg_name)
-
-        self.local_install(apk_path)
+        #
+        self.local_install(apk['apk_path'])
 
         # print('install apk from URL：\n%s' % apk_url)
         # self.d.app_install(url=apk_url)
@@ -40,9 +40,8 @@ class App_install(unittest.TestCase, BasePage):
         self.watch_device(['允许', '始终允许', '取消'])
         self.d.app_start(pkg_name)
         self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=60)
-        # XiaoYingActivity.Creation_Page().click_creation_btn()
-        # time.sleep(1)
-        # XiaoYingActivity.Creation_Page().click_creation_btn()
+        XiaoYingActivity.Creation_Page().click_creation_btn()
+
 
 
         # XiaoYingActivity.Creation_Page().click_camera_btn()
@@ -57,6 +56,7 @@ class App_install(unittest.TestCase, BasePage):
         # self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_btns").click()
         # self.back()
         self.unwatch_device()
+        self.screenshot()
 
     @testcase
     def test_02_click_edit_btn(self):
@@ -76,6 +76,7 @@ class App_install(unittest.TestCase, BasePage):
         self.watch_device(['允许', '始终允许', '取消'])
         XiaoYingActivity.Creation_Page().click_camera_btn()
         self.screenshot()
+        self.back()
         self.back()
         self.d(text='取消').click_exists(timeout=3)
         self.unwatch_device()

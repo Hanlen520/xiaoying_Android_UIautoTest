@@ -12,7 +12,7 @@ from Public.BasePage import BasePage
 from Public.Log import Log
 from Public.ReadConfig import ReadConfig
 from Public.chromedriver import ChromeDriver
-from Public.Test_data import generate_test_data
+from Public.Test_data import *
 from Public.Report import create_statistics_report
 
 
@@ -75,8 +75,9 @@ class Drivers:
             print('There is no device found,test over.')
             return
 
-        # generate test data data.json 准备测试数据
-        generate_test_data(devices)
+        # # 测试前准备
+        generate_test_data(devices)  #创建测试数据 data.js
+        download_apk()  # 下载小影最新的apk
 
         print('Starting Run test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         runs = []
@@ -96,4 +97,4 @@ class Drivers:
         ChromeDriver.kill()
 
         #  Generate statistics report  生成统计测试报告 将所有设备的报告在一个HTML中展示
-        create_statistics_report(runs)
+        create_statistics_report(runs, title=get_apk()['apk_name'])

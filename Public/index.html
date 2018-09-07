@@ -42,7 +42,7 @@
 <div class="content">
 
 
-    <h1>基于ATX的UI自动化测试报告</h1>
+    <h1>{{ title }}</h1>
     <p>合计报告数： {{ urls|length }} </p>
     <table id="result_table" class="table table-condensed table-bordered table-hover">
         <colgroup>
@@ -68,7 +68,7 @@
             <!--这里写for开头-->
             <!--{% for url in urls -%}-->
             <tr class="errorClass warning">
-                <td><li><a href="{{ url['urls'] }}">{{ url['name'] }}</a></li></td>
+                <td><li><a href="{{ url['path'] }}">{{ url['name'] }}</a></li></td>
                 <!--<td></td>-->
                 <td class="text-center">{{ url['sum'] }}</td>
                 <td class="text-center">{{ url['pass'] }}</td>

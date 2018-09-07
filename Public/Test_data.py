@@ -31,23 +31,36 @@ from bs4 import BeautifulSoup
 import re
 
 
-def download_apk(folder='../apk/'):
-    html = requests.get('http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html')
-    soup = BeautifulSoup(html.text, "lxml")
-    tmp = soup.find(href=re.compile("xiaoyingtest"))
-    apk = (tmp.get('href'), tmp.text)   # apk的下载链接和文件名
+def get_apk():
+    '''
+
+    :return: 返回apk的参数URL、name、path
+    '''
+    folder = './apk/'
     if not os.path.exists(folder):
         os.mkdir(folder)
     else:
         pass
-    r = requests.get(apk[0], 'wb')
-    print('from %s \ndownloading  %s ' % (apk[0],  apk[1]))
+    html = requests.get('http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html')
+    soup = BeautifulSoup(html.text, "lxml")
+    tmp = soup.find(href=re.compile("xiaoyingtest"))  # 获取下载链接
+    apk = {'url': tmp.get('href'),
+           'apk_name': tmp.text,
+           'apk_path': folder+tmp.text}
+    return apk
+
+
+def download_apk():
+    apk = get_apk()
+    r = requests.get(apk['url'], 'wb')
+    print('from %s \ndownloading  %s ' % (apk['url'],  apk['apk_name']))
     if r.status_code == 200:
-        with open("%s/%s" % (folder, apk[1]), "wb") as code:
+        with open("%s" % (apk['apk_path']), "wb") as code:
             code.write(r.content)
-        return folder+apk[1]
+        return True
     else:
         print('%s \nCannot GET ' % r.url)
+        return False
 
 
 if __name__ == '__main__':

@@ -18,12 +18,13 @@ def render_template(template_filename, context):
     return TEMPLATE_ENVIRONMENT.get_template(template_filename).render(context)
 
 
-def create_index_html(path_list):
+def create_index_html(path_list, title):
     '''以Pubilc/index.html 生成 自动化测试报告.html'''
     name = "./TestReport/自动化测试报告.html"
     urls = path_list
     context = {
-        'urls': urls
+        'urls': urls,
+        'title': title
     }
     with open(name, 'w', encoding="utf-8") as f:
         html = render_template('index.html', context)
@@ -53,17 +54,17 @@ def _get_report_info(run):
 
 
 
-def create_statistics_report(runs):
+def create_statistics_report(runs,title):
     '''根据运行设备的数量生成统计报告，路径为
     ./TestReport/自动化测试报告.html'''
     report_path_list = []
     for run in runs:
         tmp_dic = {}
-        tmp_dic['urls'] = re.findall("./TestReport/(.+$)", run.get_path())[0] + "/TestReport.html"
+        tmp_dic['path'] = re.findall("./TestReport/(.+$)", run.get_path())[0] + "/TestReport.html"
         tmp_dic['name'] = run.get_device()['model'] + "自动化测试报告"
         tmp_dic.update(_get_report_info(run))
         report_path_list.append(tmp_dic)
-    create_index_html(report_path_list)
+    create_index_html(report_path_list,title=title)
     print('Generate statistics report completed........ ')
 
 
