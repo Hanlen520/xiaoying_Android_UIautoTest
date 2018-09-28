@@ -24,6 +24,7 @@ class Creation_Page(BasePage):
 
     @teststep
     def click_ad_btn(self):
+        '''点击广告按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn_shuffle").click()
 
     @teststep
@@ -71,14 +72,17 @@ class Creation_Page(BasePage):
 
     @teststep
     def click_find_btn(self):
+        '''点击小影圈'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_find").click()
 
     @teststep
     def click_creation_btn(self):
+        '''点击创作按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_creation").click()
 
     @teststep
     def click_my_btn(self):
+        '''点击我的按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_studio").click()
 
 

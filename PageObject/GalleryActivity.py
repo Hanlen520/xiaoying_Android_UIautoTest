@@ -109,10 +109,12 @@ class Gallery_Page(BasePage):
 
     @teststep
     def click_close_btn(self):
+        '''点击退出按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_btn_left").click()
 
     @teststep
     def leave_select(self, leave=True):
+        '''是否保存草稿弹窗选择，leave=True 保存'''
         if leave:
             self.d(resourceId="com.quvideo.xiaoying:id/buttonDefaultPositive").click()
         else:
@@ -124,6 +126,7 @@ class VideoTrim_Page(BasePage):
 
     @teststep
     def get_trim_time(self):
+        '''获取trim 时长text'''
         t = self.d(resourceId="com.quvideo.xiaoying:id/txtview_trimed_duration").get_text()
         return t
 
@@ -161,33 +164,40 @@ class VideoTrim_Page(BasePage):
 
     @teststep
     def click_ratate_btn(self):
+        '''点击旋转按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/imgbtn_ratate").click()
 
     @teststep
     def click_crop_btn(self):
+        '''点击crop缩放按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/imgbtn_crop").click()
 
     @teststep
     def click_start_trim_btn(self):
+        '''点击剪刀按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/btn_start_trim").click()
 
     @teststep
     def click_import_btn(self):
+        '''点击添加按钮'''
         btn = self.d(resourceId="com.quvideo.xiaoying:id/imgbtn_import")
         print('添加按钮文字：%s' % btn.get_text())
         btn.click()
 
     @teststep
     def click_play_btn(self):
+        '''播放按钮点击'''
         self.d(resourceId="com.quvideo.xiaoying:id/previewview").click()
         time.sleep(2)
 
     @teststep
     def click_close_btn(self):
+        '''点击关闭按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_btn_left").click()
 
     @teststep
     def leave_select(self, leave=True):
+        '''放弃操作弹窗选择 leave=True 确认放弃操作'''
         if leave:
             self.d(resourceId="com.quvideo.xiaoying:id/buttonDefaultPositive").click()
         else:

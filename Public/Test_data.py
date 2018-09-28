@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+需要安装第三方库
+BeautifulSoup 解析Url获取apk下载链接地址
+pip install beautifulsoup4
+
+apkutils
+A library that gets infos from APK.
+https://github.com/mikusjelly/apkutils
+pip install apkutils
+
+"""
 import os
 import json
 from Public.ReadConfig import ReadConfig
@@ -29,11 +41,16 @@ def get_test_data(d):
 import requests
 from bs4 import BeautifulSoup
 import re
+import apkutils
+import json
 
 
-def get_apk():
+
+
+def get_apk(url='http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html', keyword='xiaoyingtest'):
     '''
-
+    :param url: url地址
+    :param keyword: 匹配的关键字
     :return: 返回apk的参数URL、name、path
     '''
     folder = './apk/'
@@ -41,12 +58,13 @@ def get_apk():
         os.mkdir(folder)
     else:
         pass
-    html = requests.get('http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html')
+    html = requests.get(url)
     soup = BeautifulSoup(html.text, "lxml")
-    tmp = soup.find(href=re.compile("xiaoyingtest"))  # 获取下载链接
+    tmp = soup.find(href=re.compile(keyword))  # 获取下载链接
     apk = {'url': tmp.get('href'),
            'apk_name': tmp.text,
-           'apk_path': folder+tmp.text}
+           'apk_path': folder+tmp.text,
+           'html': tmp}
     return apk
 
 
@@ -63,6 +81,16 @@ def download_apk():
         return False
 
 
+def get_apk_info(path):
+    tmp = apkutils.APK(path).get_manifest()
+    print(tmp)
+    info = {}
+    info['versionCode'] = str(tmp.get('@android:versionCode'))
+    info['versionName'] = str(tmp.get('@android:versionName'))
+    info['package'] = str(tmp.get('@package'))
+    return info
+
+
 if __name__ == '__main__':
     # print(get_apk_url())
     # html = requests.get(url)
@@ -71,7 +99,14 @@ if __name__ == '__main__':
     # print(apk.text)
     # apk_url = apk.get('href')
     # print(apk_url)
-    print(download_apk())
+    # print(download_apk())
+    apk = get_apk()
+    print(apk)
 
+    # download_apk()
+    # apk_info = get_apk_info(apk['apk_path'])
+    # title = "自动化测试报告\nPackageName%s   Version:V%s  VersionCode:%s" % (
+    #     apk_info["package"], apk_info["versionName"], apk_info["versionCode"])
+    # print(title)
 
 

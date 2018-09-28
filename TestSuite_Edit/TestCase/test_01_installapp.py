@@ -37,7 +37,7 @@ class App_install(unittest.TestCase, BasePage):
         # self.d.app_install(url=apk_url)
 
         time.sleep(2)
-        self.watch_device(['允许', '始终允许', '取消'])
+        self.watch_device(['允许', '始终允许', '取消', '立即删除'])   #华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
         self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=60)
         XiaoYingActivity.Creation_Page().click_creation_btn()

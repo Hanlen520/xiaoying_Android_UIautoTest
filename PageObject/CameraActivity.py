@@ -9,10 +9,12 @@ from uiautomator2 import UiObjectNotFoundError
 class Camera_Page(BasePage):
     @teststep
     def click_close_btn(self):
+        '''点击关闭按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/cam_btn_cancel").click()
 
     @teststep
     def leave_select(self, leave=True):
+        '''保存草稿弹窗点击 leave=True 保存'''
         if leave:
             self.d(resourceId="com.quvideo.xiaoying:id/buttonDefaultPositive").click()
         else:
@@ -120,6 +122,7 @@ class Camera_Page(BasePage):
 
     @teststep
     def music_rerecord_select(self, change=False):
+        '''重录弹窗选择，change=False 更换音乐重录'''
         if self.d(resourceId="com.quvideo.xiaoying:id/contentListView").exists:
             if change:
                 self.d(text="直接重录").click()
@@ -143,6 +146,7 @@ class Camera_Page(BasePage):
 
     @teststep
     def click_delete_btn(self):
+        '''撤销按钮点击'''
         self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_cam_btn_text_delete").click()
         time.sleep(0.2)
 
