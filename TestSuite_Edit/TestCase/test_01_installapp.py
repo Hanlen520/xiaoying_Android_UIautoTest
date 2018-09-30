@@ -5,7 +5,7 @@ from Public.Decorator import *
 import unittest
 
 from Public.ReadConfig import ReadConfig
-from PageObject import XiaoYingActivity,CameraActivity
+from PageObject import XiaoYingActivity,CameraActivity,LoginActivity
 from Public.Test_data import *
 
 apk_url = ReadConfig().get_apk_url()
@@ -26,54 +26,55 @@ class App_install(unittest.TestCase, BasePage):
     def tearDownClass(cls):
         cls.d.app_stop("com.quvideo.xiaoying")
 
+    @setup
+    def setUp(self):
+        self.d.app_start(pkg_name)
+
+    @teardown
+    def tearDown(self):
+        self.d.app_stop(pkg_name)
+
     @testcase
     def test_01_install(self):
         '''小影安装，并允许各种权限'''
-        self.d.app_uninstall(pkg_name)
-        #
-        self.local_install(apk['apk_path'])
+        # self.d.app_uninstall(pkg_name)
+        # self.local_install(apk['apk_path'])
 
         # print('install apk from URL：\n%s' % apk_url)
         # self.d.app_install(url=apk_url)
 
         time.sleep(2)
-        self.watch_device(['允许', '始终允许', '取消', '立即删除'])   #华为删除app后弹出清理弹窗
+        self.watch_device('允许|始终允许|取消|立即删除')   #华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
-        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=60)
+        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=20)
         XiaoYingActivity.Creation_Page().click_creation_btn()
-
-
-
-        # XiaoYingActivity.Creation_Page().click_camera_btn()
-        # if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").exists:
-        #     self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click()
-        #     XiaoYingActivity.Creation_Page().click_camera_btn()
-        # CameraActivity.Camera_Page().click_record_btn(duration=5)
-        # CameraActivity.Camera_Page().click_next_btn()
-        # self.d(resourceId="com.quvideo.xiaoying:id/editor_publish").click()
-        # # self.d(resourceId="com.quvideo.xiaoying:id/share_btn_share").click()  #
-        # # time.sleep(2)
-        # self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_btns").click()
-        # self.back()
         self.unwatch_device()
         self.screenshot()
 
     @testcase
-    def test_02_click_edit_btn(self):
+    def test_02_login(self):
+        XiaoYingActivity.Creation_Page().click_my_btn()
+        LoginActivity.Login_Page().click_login_btn()
+        LoginActivity.Login_Page().click_qq()
+
+
+    @testcase
+    def test_03_click_edit_btn(self):
         '''点击编辑按钮'''
         XiaoYingActivity.Creation_Page().click_creation_btn()
         XiaoYingActivity.Creation_Page().click_edit_btn()
-        if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").exists:
-            self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click()
+        if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
             XiaoYingActivity.Creation_Page().click_edit_btn()
         self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait()
         self.screenshot()
         self.back()
+        self.back()
 
     @testcase
-    def test_03_click_camera_btn(self):
+    def test_04_click_camera_btn(self):
         '''点击拍摄按钮'''
-        self.watch_device(['允许', '始终允许', '取消'])
+        XiaoYingActivity.Creation_Page().click_creation_btn()
+        self.watch_device('允许|始终允许|取消')
         XiaoYingActivity.Creation_Page().click_camera_btn()
         self.screenshot()
         self.back()
@@ -82,11 +83,9 @@ class App_install(unittest.TestCase, BasePage):
         self.unwatch_device()
 
     @testcase
-    def test_03_click_view_pager_btn(self):
+    def test_05_click_view_pager_btn(self):
         '''次要功能位的点击操作'''
-        # XiaoYingActivity.Creation_Page().click_view_pager_btn('一键大片')  # 不同手机跳转不同
-        # time.sleep(2)
-        # self.back()
+        XiaoYingActivity.Creation_Page().click_creation_btn()
         XiaoYingActivity.Creation_Page().click_view_pager_btn('相册MV')
         self.back()
         XiaoYingActivity.Creation_Page().click_view_pager_btn('美颜趣拍')
@@ -105,8 +104,9 @@ class App_install(unittest.TestCase, BasePage):
         self.back()
 
     @testcase
-    def test_04_click_studio_view(self):
+    def test_06_click_studio_view(self):
         '''我的工作室操作'''
+        XiaoYingActivity.Creation_Page().click_creation_btn()
         XiaoYingActivity.Creation_Page().click_more_btn()
         self.back()
         XiaoYingActivity.Creation_Page().click_studio_view(1)

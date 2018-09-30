@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+'''
+多进程check_alive
+Mac下需要配置  `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`到环境变量，不然python会挂掉
+'''
 from Public.ReadConfig import ReadConfig
 from Public.ATX_Server import ATX_Server
 import uiautomator2 as u2
@@ -45,7 +48,6 @@ def get_online_devices():
             if i.get():
                 print(i.get())
                 devices_list.append(i.get())
-
         return devices_list
     else:
         raise Exception('ATX-Server has no online device!!! ')
