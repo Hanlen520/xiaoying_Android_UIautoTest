@@ -51,7 +51,7 @@ def get_apk(url='http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.htm
     '''
     :param url: url地址
     :param keyword: 匹配的关键字
-    :return: 返回apk的参数URL、name、path
+    :return: 返回apk的参数url apk_name apk_path html
     '''
     folder = './apk/'
     if not os.path.exists(folder):
@@ -70,8 +70,8 @@ def get_apk(url='http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.htm
 
 def download_apk():
     apk = get_apk()
+    print('from %s \ndownloading  %s ' % (apk['url'], apk['apk_name']))
     r = requests.get(apk['url'], 'wb')
-    print('from %s \ndownloading  %s ' % (apk['url'],  apk['apk_name']))
     if r.status_code == 200:
         with open("%s" % (apk['apk_path']), "wb") as code:
             code.write(r.content)
@@ -83,7 +83,6 @@ def download_apk():
 
 def get_apk_info(path):
     tmp = apkutils.APK(path).get_manifest()
-    print(tmp)
     info = {}
     info['versionCode'] = str(tmp.get('@android:versionCode'))
     info['versionName'] = str(tmp.get('@android:versionName'))

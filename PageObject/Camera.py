@@ -165,7 +165,7 @@ class Camera_Page(BasePage):
             raise Exception('There has no record yet')
 
 
-class CameraSettng_Page(BasePage):
+class CameraSetting_Page(BasePage):
     @teststep
     def switch_flashlight(self):
         '''相机设置 闪光灯开关按钮点击'''
