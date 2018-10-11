@@ -54,7 +54,7 @@ class Gallery_Page(BasePage):
         self.d.click(x, y)
 
     @teststep
-    def click_video_clip(self, inst=1):
+    def select_video_clip(self, inst=1):
         '''
         clip选择，点击视频缩略图
         :param instance: inst=n 点击第n个clips
@@ -62,7 +62,7 @@ class Gallery_Page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/img_icon", instance=inst - 1).click()
 
     @teststep
-    def click_photo_clip(self, inst=1, preview=False):
+    def select_photo_clip(self, inst=1, preview=False):
         '''
 
         :param inst: inst=n 点击第n个clips
@@ -211,26 +211,4 @@ if __name__ == '__main__':
     # BasePage().set_driver('10.0.28.14')
     BasePage().set_driver('10.0.28.164')
     p = VideoTrim_Page()
-    # p.set_driver('10.0.28.164')
-    # # p.gallery_choose(2)
-    # p.click_folder('Mac')
-    # p.click_clip(instance=3)
-    # p.click_photo_clip(2)
 
-    # p.delete_clip(3)
-    # p.drag_clip(1, 4)
-    # Gallery_Page().click_video_clip(1)
-    # p.trim_swipe()
-    # p.click_ratate_btn()
-    # p.click_crop_btn()
-    # p.click_start_trim_btn()
-    # time.sleep(1)
-    # p.click_start_trim_btn()
-    # p.click_play_btn()
-    #
-    # p.click_close_btn()
-    # p.leave_select(False)
-    # p.click_import_btn()
-    # p.click_play_btn()
-    print(Gallery_Page().choose_gallery(2))
-    # Gallery_Page().leave_select()

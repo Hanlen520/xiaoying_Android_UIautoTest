@@ -16,6 +16,8 @@ class BasePage(object):
     @classmethod
     def set_driver(cls, dri):
         cls.d = u2.connect(dri)
+        # cls.d.debug = True
+        # cls.d.implicitly_wait(10.0)
 
     def get_driver(self):
         return self.d
@@ -265,7 +267,7 @@ class BasePage(object):
 
         self._swipe(fromX, fromY, toX, toY, steps)
 
-    def swipe_down(self, element=None, steps=0.2):
+    def swipe_down(self, element=None, steps=0.1):
         """
         swipe down
         :param element: UI element, if None while swipe window of phone
@@ -288,7 +290,7 @@ class BasePage(object):
 
         self._swipe(fromX, fromY, toX, toY, steps)
 
-    def swipe_left(self, element=None, steps=0.2):
+    def swipe_left(self, element=None, steps=0.1):
         """
         swipe left
         :param element: UI element, if None while swipe window of phone
@@ -309,7 +311,7 @@ class BasePage(object):
             toY = 0.5 * y
         self._swipe(fromX, fromY, toX, toY, steps)
 
-    def swipe_right(self, element=None, steps=0.2):
+    def swipe_right(self, element=None, steps=0.1):
         """
         swipe right
         :param element: UI element, if None while swipe window of phone
@@ -330,7 +332,7 @@ class BasePage(object):
             toY = 0.5 * y
         self._swipe(fromX, fromY, toX, toY, steps)
 
-    def _find_element_by_swipe(self, direction, value, element=None, steps=0.2, max_swipe=6):
+    def _find_element_by_swipe(self, direction, value, element=None, steps=0.1, max_swipe=6):
         """
         :param direction: swip direction exp: right left up down
         :param value: The value of the UI element location strategy. exp: d(text='Logina')
@@ -358,19 +360,19 @@ class BasePage(object):
                 if i == times - 1:
                     raise UiObjectNotFoundError
 
-    def find_element_by_swipe_up(self, value, element=None, steps=0.2, max_swipe=6):
+    def find_element_by_swipe_up(self, value, element=None, steps=0.1, max_swipe=6):
         return self._find_element_by_swipe('up', value,
                                            element=element, steps=steps, max_swipe=max_swipe)
 
-    def find_element_by_swipe_down(self, value, element=None, steps=0.2, max_swipe=6):
+    def find_element_by_swipe_down(self, value, element=None, steps=0.1, max_swipe=6):
         return self._find_element_by_swipe('down', value,
                                            element=element, steps=steps, max_swipe=max_swipe)
 
-    def find_element_by_swipe_left(self, value, element=None, steps=0.2, max_swipe=6):
+    def find_element_by_swipe_left(self, value, element=None, steps=0.1, max_swipe=6):
         return self._find_element_by_swipe('left', value,
                                            element=element, steps=steps, max_swipe=max_swipe)
 
-    def find_element_by_swipe_right(self, value, element=None, steps=0.2, max_swipe=6):
+    def find_element_by_swipe_right(self, value, element=None, steps=0.1, max_swipe=6):
         return self._find_element_by_swipe('right', value,
                                            element=element, steps=steps, max_swipe=max_swipe)
 

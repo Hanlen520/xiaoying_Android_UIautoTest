@@ -63,12 +63,12 @@ class Creation_Page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/btn_more").click()
 
     @teststep
-    def click_studio_view(self, inst=0):
+    def select_studio_view(self, inst=1):
         '''
         点击我的工作室的view 默认第一个
-        :param inst: 0为第一个view 以此类推 0\1\2--> 一二三
+        :param inst: 0为第一个view 以此类推 1、2、3--> 一二三
         '''
-        self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_item").child(className='android.widget.ImageView')[inst].click()
+        self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_item").child(className='android.widget.ImageView')[inst-1].click()
 
     @teststep
     def click_find_btn(self):

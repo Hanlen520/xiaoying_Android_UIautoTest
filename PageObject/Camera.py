@@ -67,7 +67,7 @@ class Camera_Page(BasePage):
         return effect_name
 
     @teststep
-    def camera_modes_select(self, inst=1):
+    def select_camera_modes(self, inst=1):
         '''
         相机模式选择 0-->自拍美颜  1&other-->高清相机 2-->音乐视频
         :param inst:
@@ -81,7 +81,7 @@ class Camera_Page(BasePage):
         time.sleep(4)  # waite camera load
 
     @teststep
-    def fb_level_select(self, inst=2):
+    def select_fb_level(self, inst=2):
         '''
         设置美颜程度
         :param inst: inst  0~4之间任意间隔0.2的数字  exp 0.2、0.4、...1.8、2.0
@@ -94,16 +94,16 @@ class Camera_Page(BasePage):
         self.d.long_click(x, y)
 
     @teststep
-    def effect_bar_select(self, inst=1):
+    def select_effect_bar(self, inst=2):
         '''人脸贴纸 底部bar的选择
-        :param inst: 0、1、2、3、4
+        :param inst: 1、2、3、4、5
         '''
-        self.d(className="android.support.v7.app.ActionBar$b", instance=inst).click()
+        self.d(className="android.support.v7.app.ActionBar$b", instance=inst-1).click()
 
     @teststep
-    def effect_img_click(self, inst=0):
+    def effect_img_click(self, inst=1):
         '''人脸贴纸选择'''
-        self.d(resourceId="com.quvideo.xiaoying:id/img_filter_thumb", instance=inst).click()
+        self.d(resourceId="com.quvideo.xiaoying:id/img_filter_thumb", instance=inst-1).click()
 
     # @teststep
     # def effect_downloaded(self, inst=1):

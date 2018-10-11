@@ -19,6 +19,11 @@ class Login_Page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/rl_login_qq").click()
         self.d(resourceId="com.tencent.mobileqq:id/name", text=u"登录").click()
 
+    @teststep
+    def is_login_page(self):
+        '''判断是否在在登录页面'''
+        return self.d(resourceId="com.quvideo.xiaoying:id/bind_account_logo").wait()
+
 
 if __name__ == '__main__':
     from Public.Log import Log

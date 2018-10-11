@@ -111,7 +111,7 @@ class App_install(unittest.TestCase, BasePage):
         Creation.Creation_Page().click_creation_btn()
         Creation.Creation_Page().click_more_btn()
         self.back()
-        Creation.Creation_Page().click_studio_view(1)
+        Creation.Creation_Page().select_studio_view(1)
         time.sleep(2)
         self.screenshot()
 
