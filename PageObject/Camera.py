@@ -241,7 +241,7 @@ if __name__ == '__main__':
     from Public.Log import Log
 
     Log().set_logger('udid', './log.log')
-    BasePage().set_driver('10.0.28.164')
+    BasePage().set_driver('10.0.29.65')
     # Camera_Page().leave_select(False)
     # Camera_Page().effect_downloaded(2)
     # Camera_Page().click_delete_btn()
@@ -250,11 +250,7 @@ if __name__ == '__main__':
     # Camera_Page().click_delete_btn()
     # Camera_Page().click_delete_btn()
     # print(Camera_Page().get_record_info())
-    CameraPreview_Page().click_play_btn()
-    time.sleep(2)
-    print(CameraPreview_Page().get_seekbar_time())
-    CameraPreview_Page().click_play_btn()
-    CameraPreview_Page().click_edit_video_btn()
+    Camera_Page().select_fb_level()
 
 
 

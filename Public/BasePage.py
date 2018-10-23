@@ -7,6 +7,8 @@ from Public.chromedriver import ChromeDriver
 from Public.Ports import Ports
 from Public.ReportPath import ReportPath
 
+
+
 import warnings
 
 
@@ -150,6 +152,7 @@ class BasePage(object):
             cls.d.app_start('io.appium.unlock')
             cls.d.shell('input keyevent 3')
 
+
     @classmethod
     def back(cls):
         '''点击返回
@@ -245,7 +248,7 @@ class BasePage(object):
     def _swipe(self, fromX, fromY, toX, toY, steps):
         self.d.swipe(fromX, fromY, toX, toY, steps)
 
-    def swipe_up(self, element=None, steps=0.2):
+    def swipe_up(self, element=None, steps=0.1):
         """
         swipe up
         :param element: UI element, if None while swipe window of phone
@@ -261,7 +264,7 @@ class BasePage(object):
         else:
             x, y = self._get_window_size()
             fromX = 0.5 * x
-            fromY = 0.5 * y
+            fromY = 0.75 * y
             toX = 0.5 * x
             toY = 0.25 * y
 
@@ -284,7 +287,7 @@ class BasePage(object):
         else:
             x, y = self._get_window_size()
             fromX = 0.5 * x
-            fromY = 0.5 * y
+            fromY = 0.25 * y
             toX = 0.5 * x
             toY = 0.75 * y
 
@@ -305,7 +308,7 @@ class BasePage(object):
             toY = y_center
         else:
             x, y = self._get_window_size()
-            fromX = 0.5 * x
+            fromX = 0.75 * x
             fromY = 0.5 * y
             toX = 0.25 * x
             toY = 0.5 * y
@@ -326,7 +329,7 @@ class BasePage(object):
             toY = y_center
         else:
             x, y = self._get_window_size()
-            fromX = 0.5 * x
+            fromX = 0.25 * x
             fromY = 0.5 * y
             toX = 0.75 * x
             toY = 0.5 * y

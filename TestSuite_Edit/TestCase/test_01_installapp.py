@@ -84,6 +84,7 @@ class App_install(unittest.TestCase, BasePage):
         self.d(text='取消').click_exists(timeout=3)
         self.unwatch_device()
 
+
     @testcase
     def test_05_click_view_pager_btn(self):
         '''次要功能位的点击操作'''
@@ -105,15 +106,15 @@ class App_install(unittest.TestCase, BasePage):
         self.screenshot()
 
 
-    @testcase
-    def test_06_click_studio_view(self):
-        '''我的工作室操作'''
-        Creation.Creation_Page().click_creation_btn()
-        Creation.Creation_Page().click_more_btn()
-        self.back()
-        Creation.Creation_Page().select_studio_view(1)
-        time.sleep(2)
-        self.screenshot()
+    # @testcase
+    # def test_06_click_studio_view(self):
+    #     '''我的工作室操作'''
+    #     Creation.Creation_Page().click_creation_btn()
+    #     Creation.Creation_Page().click_more_btn()
+    #     self.back()
+    #     Creation.Creation_Page().select_studio_view(1)
+    #     time.sleep(2)
+    #     self.screenshot()
 
 
 

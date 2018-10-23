@@ -5,17 +5,17 @@ from Public.Decorator import *
 import unittest
 
 from Public.ReadConfig import ReadConfig
-from PageObject import Creation,Camera,Login,Community
+from PageObject import Creation, Camera, Login, Community
 from Public.Test_data import *
 
 apk_url = ReadConfig().get_apk_url()
 apk = get_apk()
 pkg_name = ReadConfig().get_pkg_name()
 
-
-
+@unittest.skip
 class Community_Not_Login(unittest.TestCase, BasePage):
     '''社区相关 账号未登录'''
+
     @classmethod
     @setupclass
     def setUpClass(cls):
@@ -34,14 +34,14 @@ class Community_Not_Login(unittest.TestCase, BasePage):
     def tearDown(self):
         self.d.app_stop(pkg_name)
 
-    # @unittest.skip
+    @unittest.skip
     @testcase
     def test_01_install(self):
         '''小影安装，并允许各种权限'''
         self.d.app_uninstall(pkg_name)
         self.local_install(apk['apk_path'])
         time.sleep(2)
-        self.watch_device('允许|始终允许|取消|立即删除')   #华为删除app后弹出清理弹窗
+        self.watch_device('允许|始终允许|取消|立即删除')  # 华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
         self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=20)
         self.unwatch_device()
@@ -74,7 +74,7 @@ class Community_Not_Login(unittest.TestCase, BasePage):
         # 点击静音按钮以消除引导图
         Community.FeedVideo_Page().click_MuteMode_btn()
 
-        while Community.FeedVideo_Page().get_video_info()[4] == "-":
+        while Community.FeedVideo_Page().get_video_info("comment") == "-":
             self.swipe_up(steps=0.05)
             time.sleep(2)
         Community.FeedVideo_Page().click_comment_btn()
@@ -125,87 +125,12 @@ class Community_Not_Login(unittest.TestCase, BasePage):
         self.screenshot()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # @testcase
-    # def test_02_login(self):
-    #     '''小影账号登录'''
-    #     Creation.Creation_Page().click_my_btn()
-    #     Login.Login_Page().click_login_btn()
-    #     Login.Login_Page().click_qq()
-    #     self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").wait()
-    #
-    #
-    #
-    # @testcase
-    # def test_03_click_edit_btn(self):
-    #     '''点击编辑按钮'''
-    #     Creation.Creation_Page().click_creation_btn()
-    #     Creation.Creation_Page().click_edit_btn()
-    #     if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
-    #         Creation.Creation_Page().click_edit_btn()
-    #     self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait()
-    #     self.screenshot()
-    #
-    #
-    # @testcase
-    # def test_04_click_camera_btn(self):
-    #     '''点击拍摄按钮'''
-    #     Creation.Creation_Page().click_creation_btn()
-    #     self.watch_device('允许|始终允许|取消')
-    #     Creation.Creation_Page().click_camera_btn()
-    #     self.screenshot()
-    #     self.back()
-    #     self.back()
-    #     self.d(text='取消').click_exists(timeout=3)
-    #     self.unwatch_device()
-    #
-    # @testcase
-    # def test_05_click_view_pager_btn(self):
-    #     '''次要功能位的点击操作'''
-    #     Creation.Creation_Page().click_creation_btn()
-    #     Creation.Creation_Page().click_view_pager_btn('相册MV')
-    #     self.back()
-    #     Creation.Creation_Page().click_view_pager_btn('美颜趣拍')
-    #     time.sleep(4)
-    #     self.d(text='取消').click_exists(timeout=3)
-    #     self.back()
-    #     Creation.Creation_Page().click_view_pager_btn('素材中心')
-    #     time.sleep(2)
-    #     self.back()
-    #     Creation.Creation_Page().click_view_pager_btn('新手教程')
-    #     time.sleep(2)
-    #     self.back()
-    #     Creation.Creation_Page().click_view_pager_btn('画中画编辑')
-    #     time.sleep(2)
-    #     self.screenshot()
-    #
-    #
-    # @testcase
-    # def test_06_click_studio_view(self):
-    #     '''我的工作室操作'''
-    #     Creation.Creation_Page().click_creation_btn()
-    #     Creation.Creation_Page().click_more_btn()
-    #     self.back()
-    #     Creation.Creation_Page().click_studio_view(1)
-    #     time.sleep(2)
-    #     self.screenshot()
-
-
-
 if __name__ == '__main__':
+    from Public.Log import Log
+
+    Log().set_logger('udid', './log.log')
+    BasePage().set_driver('10.0.29.65')
     suite = unittest.TestSuite()
-    suite.addTest(Unlogin.test_02_Jump_login)
+    suite.addTest(Community_Not_Login('test_02_Jump_login'))
     runner = unittest.TextTestRunner()
     runner.run(suite)

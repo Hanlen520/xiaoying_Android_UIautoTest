@@ -76,10 +76,10 @@ class Drivers:
             return
 
         # # 测试前准备
-        generate_test_data(devices)  # 创建测试数据 data.js
-        download_apk()  # 下载小影最新的apk
-        apk = get_apk()
-        apk_info = get_apk_info(apk['apk_path'])  # 获取apk信息
+        # generate_test_data(devices)  # 创建测试数据 data.js
+        # download_apk()  # 下载小影最新的apk
+        # apk = get_apk()
+        # apk_info = get_apk_info(apk['apk_path'])  # 获取apk信息
 
         print('Starting Run test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         runs = []
@@ -100,7 +100,8 @@ class Drivers:
 
         #  Generate statistics report  生成统计测试报告 将所有设备的报告在一个HTML中展示
 
-        title = "ApkUrl: %s<br />PackageName: %s<br /> Version: V%s<br />VersionCode: %s" % (
-            apk['html'], apk_info["package"], apk_info["versionName"], apk_info["versionCode"])
+        # title = "ApkUrl: %s<br />PackageName: %s<br /> Version: V%s<br />VersionCode: %s" % (
+        #     apk['html'], apk_info["package"], apk_info["versionName"], apk_info["versionCode"])
 
-        create_statistics_report(runs, title=title)
+        # create_statistics_report(runs, title=title)
+        create_statistics_report(runs)

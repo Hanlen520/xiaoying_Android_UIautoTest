@@ -115,18 +115,49 @@ class FeedVideo_Page(BasePage):
     '''沉浸Feed视频页面'''
 
     @teststep
-    def get_video_info(self):
-        '''获取当前feed视频的信息，title, description, playcount, likecount, commentcount, sharecount'''
-        title = self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_title").get_text()
-        playcount = self.d(resourceId="com.quvideo.xiaoying:id/feed_playcount_action").get_text()
-        likecount = self.d(resourceId="com.quvideo.xiaoying:id/feed_like_action").get_text()
-        commentcount = self.d(resourceId="com.quvideo.xiaoying:id/feed_comment_action").get_text()
-        sharecount = self.d(resourceId="com.quvideo.xiaoying:id/feed_share_action").get_text()
-        if self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_text").exists:
-            description = self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_text").get_text()
-        else:
-            description = None
-        return title, description, playcount, likecount, commentcount, sharecount
+    def get_video_info(self, name="title"):
+        '''
+        获取当前feed视频的信息 标题、播放量、点赞量、评论数、分享数、描述、下载数
+        :param name: title play like comment share description download
+        :return:
+        '''
+        if name == "title":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_title").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_title").get_text()
+            else:
+                return Exception('No title')
+        elif name == "play":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_playcount_action").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_playcount_action").get_text()
+            else:
+                return Exception('No playcount')
+        elif name == "like":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_like_action").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_like_action").get_text()
+            else:
+                return Exception('No like count')
+        elif name == "comment":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_comment_action").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_comment_action").get_text()
+            else:
+                return Exception('No Comment')
+        elif name == "share":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_share_action").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_share_action").get_text()
+            else:
+                return Exception('No share count')
+        elif name == "description":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_text").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_desc_text").get_text()
+            else:
+                return Exception('No description')
+        elif name == "download":
+            if self.d(resourceId="com.quvideo.xiaoying:id/feed_download_action").exists:
+
+                return self.d(resourceId="com.quvideo.xiaoying:id/feed_download_action").get_text()
+            else:
+                return Exception('No download count')
+
 
     @teststep
     def get_current_time(self):
@@ -257,28 +288,38 @@ class UserInfo_Page(BasePage):
     '''用户详情 页面,包含他人主页 我的主页'''
 
     @teststep
-    def get_user_info(self):
+    def get_user_info(self, name="title"):
         '''
-        获取用户信息
-        :return: name, introduce, id, zan_count, fans_count, follow_count, works_count, likes_count
+        获取用户信息 昵称 、id、简介、获赞数、粉丝数、关注数、作品数、喜欢数目
+        :param name: title, id, introduce, zan, fans, follow, work, like
+        :return:
         '''
-        if self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").exists:
-            name = self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").get_text()
-        else:
-            name = self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_text").get_text()
-        if self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_id").exists:
-            id = self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_id").get_text()
-        else:
-            id = self.d(resourceId="com.quvideo.xiaoying:id/studio_title_id").get_text()
-        introduce = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_studio_account_introduce").get_text()
-        zan_count = self.d(resourceId="com.quvideo.xiaoying:id/user_zan_count").get_text()
-        fans_count = self.d(resourceId="com.quvideo.xiaoying:id/user_fans_count").get_text()
-        follow_count = self.d(resourceId="com.quvideo.xiaoying:id/user_follow_count").get_text()
-        works_count = str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
+
+        if name == "title":
+            if self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").get_text()
+            else:
+                return self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_text").get_text()
+        elif name == "id":
+            if self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_id").exists:
+                return self.d(resourceId="com.quvideo.xiaoying:id/user_other_title_id").get_text()
+            else:
+                return self.d(resourceId="com.quvideo.xiaoying:id/studio_title_id").get_text()
+        elif name == "introduce":
+            return self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_studio_account_introduce").get_text()
+        elif name == "zan":
+            return self.d(resourceId="com.quvideo.xiaoying:id/user_zan_count").get_text()
+        elif name == "fans":
+            return self.d(resourceId="com.quvideo.xiaoying:id/user_fans_count").get_text()
+        elif name == "follow":
+            return self.d(resourceId="com.quvideo.xiaoying:id/user_follow_count").get_text()
+        elif name == "work":
+            return str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
                           child(resourceId="com.quvideo.xiaoying:id/text_count", instance=0).get_text()).split(" ")[1]
-        likes_count = str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
+        elif name == "like":
+            return str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
                           child(resourceId="com.quvideo.xiaoying:id/text_count", instance=1).get_text()).split(" ")[1]
-        return name, introduce, id, zan_count, fans_count, follow_count, works_count, likes_count
+
 
 
     @teststep
@@ -349,19 +390,56 @@ class UserInfo_Page(BasePage):
         '''
         self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=inst-1).click()
 
+
     @teststep
     def is_like_tab(self):
+        '''
+        是否在喜欢tab下
+        :return: true false
+        '''
         return self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=1).\
             sibling(resourceId="com.quvideo.xiaoying:id/img_cursor_line").wait(timeout=3)
 
 
-
+    @teststep
+    def click_back_top_btn(self):
+        '''点击返回顶部按钮'''
+        if self.d(resourceId="com.quvideo.xiaoying:id/creation_back_top").exists:
+            self.d(resourceId="com.quvideo.xiaoying:id/creation_back_top").click()
+            return True
+        else:
+            return False
 if __name__ == '__main__':
     from Public.Log import Log
     Log().set_logger('udid', './log.log')
     BasePage().set_driver('10.0.29.65')
     # Community_Page().select_Bar(2)
-    print(UserInfo_Page().select_tab(2))
-    # print(UserInfo_Page().get_user_info())
-    print(UserInfo_Page().is_like_tab())
+    # print(UserInfo_Page().select_tab(2))
+    # # print(UserInfo_Page().get_user_info())
+    # print(UserInfo_Page().is_like_tab())
+    # print(UserInfo_Page().is_like_tab())
+    # print(FeedVideo_Page().get_video_info("title"))
+    #     # print(FeedVideo_Page().get_video_info("description"))
+    #     # print(FeedVideo_Page().get_video_info("play"))
+    #     #
+    #     # print(FeedVideo_Page().get_video_info("like"))
+    #     # print(FeedVideo_Page().get_video_info("comment"))
+    #     #
+    #     # print(FeedVideo_Page().get_video_info("download"))
+    #     # print(FeedVideo_Page().get_video_info("share"))
+    #     # print(FeedVideo_Page().get_current_time())
+
+    # print(UserInfo_Page().get_user_info("title"))
+    # print(UserInfo_Page().get_user_info("id"))
+    # print(UserInfo_Page().get_user_info("zan"))
+    # print(UserInfo_Page().get_user_info("fans"))
+    # print(UserInfo_Page().get_user_info("follow"))
+    # print(UserInfo_Page().get_user_info("work"))
+    # print(UserInfo_Page().get_user_info("like"))
+    for i in range(5):
+        BasePage().swipe_up(steps=0.05)
+    print(UserInfo_Page().click_back_top_btn())
+
+
+
 

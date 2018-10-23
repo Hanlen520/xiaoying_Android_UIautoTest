@@ -130,7 +130,7 @@ class VideoTrim_Page(BasePage):
         t = self.d(resourceId="com.quvideo.xiaoying:id/txtview_trimed_duration").get_text()
         return t
 
-    @teststep
+    @teststeps
     def trim_swipe(self):
         '''
         进入剪取页面，左右滑动trim及微调trim，只有初次进入才能操作成功（trimbar无法定位）

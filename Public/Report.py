@@ -54,7 +54,7 @@ def _get_report_info(run):
 
 
 
-def create_statistics_report(runs,title):
+def create_statistics_report(runs,title=None):
     '''根据运行设备的数量生成统计报告，路径为
     ./TestReport/自动化测试报告.html'''
     report_path_list = []
