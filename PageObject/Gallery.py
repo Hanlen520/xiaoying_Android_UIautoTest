@@ -10,7 +10,7 @@ class Gallery_Page(BasePage):
     '''gallery页面'''
 
     @teststep
-    def choose_gallery(self, select=0):
+    def select_gallery(self, select=0):
         '''
         点击切换视频 、图片
         :param select: 1-->video  2-->photo 0&other--> pass
@@ -29,7 +29,7 @@ class Gallery_Page(BasePage):
         return gallery_title
 
     @teststep
-    def choose_gallery_tab(self, tab=1):
+    def select_gallery_tab(self, tab=1):
         '''
         全部、其他相册点击切换
         :param tab: 1-->全部  2-->其他相册
@@ -46,12 +46,22 @@ class Gallery_Page(BasePage):
         其他相册，点击文件夹
         :param name: folder name textContains exp: '系统' will click folder'系统相册'
         '''
+        self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).fling.toBeginning()
         ele = self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager")
-        rect = self.find_element_by_swipe_up(value=self.d(textContains=name), element=ele).info['bounds']
+        rect = self.find_element_by_swipe_up(value=self.d(textContains=name), element=ele, steps=0.2).info['bounds']
         time.sleep(0.5)
+        print(rect)
         x = (rect['right'] + rect['left']) / 2
-        y = rect['bottom'] - self.d.window_size()[0] / 2.2
-        self.d.click(x, y)
+        print(self.d.window_size())
+        y = rect['top'] - self.d.window_size()[0]/3
+        print(x, y)
+        self.d.long_click(x, y)
+
+    @teststep
+    def click_fo(self):
+        # self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).fling.toBeginning()
+        # self.d(resourceId="com.quvideo.xiaoying:id/rc_folder", scrollable=True).fling.toBeginning()
+        self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).scroll.to(text="微信")
 
     @teststep
     def select_video_clip(self, inst=1):
@@ -98,9 +108,18 @@ class Gallery_Page(BasePage):
         :param end:  移动到clips的位置
         :return:
         '''
-        start_center = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=start - 1)
-        end_center = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=end - 1).center()
-        start_center.drag_to(end_center[0], end_center[1])
+
+        start_clip = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=start - 1)
+        # start.click()
+        end_clip = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=end - 1).info["bounds"]
+        if start > end:
+            start_clip.drag_to(end_clip["left"], end_clip["top"])
+        else:
+            start_clip.drag_to(end_clip["right"], end_clip["bottom"])
+
+        # start_center = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=start - 1)
+        # end_center = self.d(resourceId="com.quvideo.xiaoying:id/icon", instance=end - 1).center()
+        # start_center.drag_to(end_center[0], end_center[1])
 
     @teststep
     def click_next_btn(self):
@@ -208,7 +227,7 @@ if __name__ == '__main__':
     from Public.Log import Log
 
     Log().set_logger('udid', './log.log')
-    # BasePage().set_driver('10.0.28.14')
-    BasePage().set_driver('10.0.28.164')
-    p = VideoTrim_Page()
+    BasePage().set_driver('10.0.29.65')
+    Gallery_Page().click_up_down()
+    Gallery_Page().drag_clip(8,1)
 
