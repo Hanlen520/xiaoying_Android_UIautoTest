@@ -6,7 +6,7 @@ from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
 
 
-class Camera_Page(BasePage):
+class camera_page(BasePage):
     @teststep
     def click_close_btn(self):
         '''点击关闭按钮'''
@@ -165,7 +165,7 @@ class Camera_Page(BasePage):
             raise Exception('There has no record yet')
 
 
-class CameraSetting_Page(BasePage):
+class camerasetting_page(BasePage):
     @teststep
     def switch_flashlight(self):
         '''相机设置 闪光灯开关按钮点击'''
@@ -200,7 +200,7 @@ class CameraSetting_Page(BasePage):
 
 
 
-class CameraPreview_Page(BasePage):
+class camerapreview_page(BasePage):
     @teststep
     def click_back_btn(self):
         '''点击 返回 按钮'''
@@ -250,7 +250,7 @@ if __name__ == '__main__':
     # Camera_Page().click_delete_btn()
     # Camera_Page().click_delete_btn()
     # print(Camera_Page().get_record_info())
-    Camera_Page().select_fb_level()
+    camera_page().select_fb_level()
 
 
 

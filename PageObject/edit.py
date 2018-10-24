@@ -6,7 +6,7 @@ from Public.BasePage import BasePage
 from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
 
-class Edit_Page(BasePage):
+class edit_page(BasePage):
     @teststep
     def select_editor_tab(self, inst=1):
         '''
@@ -171,6 +171,43 @@ class Edit_Page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/terminator_left").click()
         self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_alert_dialog_positive").click_exists(timeout=1)
 
+class fitler_page(BasePage):
+    @teststep
+    def select_filter(self, text="原图"):
+        '''选择滤镜卷，并点击展开滤镜卷'''
+        ele = self.d(resourceId="com.quvideo.xiaoying:id/rc_editor_filter")
+        BasePage().find_element_by_swipe_left(self.d(text=text), ele, max_swipe=15)
+        time.sleep(1)
+        self.d(resourceId="com.quvideo.xiaoying:id/item_fitler_parent_name", text=text).click()
+        time.sleep(3)  # 等待下载完成
+
+    @teststeps
+    def click_filter_btn(self, text):
+        '''点击选择滤镜'''
+        ele = self.d(resourceId="com.quvideo.xiaoying:id/rc_editor_filter")
+        BasePage().find_element_by_swipe_left(self.d(text=text), ele)
+        time.sleep(1)  # 等待主题馆展开
+        self.d(resourceId="com.quvideo.xiaoying:id/item_fitler_child_name", text=text).click()
+
+    @teststeps
+    def select_filter_alpha(self,inst=50):
+        '''
+        设置滤镜程度 除了（0~10） 之间的的任意数字,5左右的数字存在一定的偏差
+        :param inst: inst  0—~104之间任意间隔0.2的数字  exp 1。2、0.4、...1.8、9.8
+        '''
+        bar = self.d(resourceId="com.quvideo.xiaoying:id/indicatorSeekBar").info['bounds']
+        y = bar['top'] + (bar['bottom'] - bar['top']) / 2
+        unit = (bar['right'] - bar['left']) / 120
+        x = 10*unit+bar['left'] + inst * unit
+        print(bar)
+        print(x, y)
+        self.d.long_click(x, y)
+
+
+
+
+
+
 
 
 
@@ -192,4 +229,9 @@ if __name__ == '__main__':
     # Edit_Page().click_clip(1)
     # Edit_Page().select_clip_edit_tool("镜头排序")
     # Edit_Page().drag_clip(1, 8)
-    Edit_Page().cancel_setting()
+    # edit_page().cancel_setting()
+    edit_page().select_clip_edit_tool("滤镜")
+    fitler_page().select_filter("Polaroid")
+    fitler_page().click_filter_btn("宽幅")
+    fitler_page().select_filter_alpha(26)
+    edit_page().effect_setting()

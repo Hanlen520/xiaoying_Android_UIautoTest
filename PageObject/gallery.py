@@ -6,7 +6,7 @@ from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
 
 
-class Gallery_Page(BasePage):
+class gallery_page(BasePage):
     '''gallery页面'''
 
     @teststep
@@ -140,7 +140,7 @@ class Gallery_Page(BasePage):
             self.d(resourceId="com.quvideo.xiaoying:id/buttonDefaultNegative").click()
 
 
-class VideoTrim_Page(BasePage):
+class videotrim_page(BasePage):
     '''视频剪取页面'''
 
     @teststep
@@ -228,6 +228,6 @@ if __name__ == '__main__':
 
     Log().set_logger('udid', './log.log')
     BasePage().set_driver('10.0.29.65')
-    Gallery_Page().click_up_down()
-    Gallery_Page().drag_clip(8,1)
+    gallery_page().click_up_down()
+    gallery_page().drag_clip(8, 1)
 

@@ -5,7 +5,7 @@ from Public.Decorator import *
 import unittest
 
 from Public.ReadConfig import ReadConfig
-from PageObject import Creation,Camera,Login
+from PageObject import creation,camera,login
 from Public.Test_data import *
 
 apk_url = ReadConfig().get_apk_url()
@@ -47,16 +47,16 @@ class App_install(unittest.TestCase, BasePage):
         self.watch_device('允许|始终允许|取消|立即删除')   #华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
         self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=20)
-        Creation.Creation_Page().click_creation_btn()
+        creation.creation_page().click_creation_btn()
         self.unwatch_device()
         self.screenshot()
 
     @testcase
     def test_02_login(self):
         '''小影账号登录'''
-        Creation.Creation_Page().click_my_btn()
-        Login.Login_Page().click_login_btn()
-        Login.Login_Page().click_qq()
+        creation.creation_page().click_my_btn()
+        login.login_page().click_login_btn()
+        login.login_page().click_qq()
         self.d(resourceId="com.quvideo.xiaoying:id/studio_title_text").wait()
 
 
@@ -64,10 +64,10 @@ class App_install(unittest.TestCase, BasePage):
     @testcase
     def test_03_click_edit_btn(self):
         '''点击编辑按钮'''
-        Creation.Creation_Page().click_creation_btn()
-        Creation.Creation_Page().click_edit_btn()
+        creation.creation_page().click_creation_btn()
+        creation.creation_page().click_edit_btn()
         if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
-            Creation.Creation_Page().click_edit_btn()
+            creation.creation_page().click_edit_btn()
         self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait()
         self.screenshot()
 
@@ -75,9 +75,9 @@ class App_install(unittest.TestCase, BasePage):
     @testcase
     def test_04_click_camera_btn(self):
         '''点击拍摄按钮'''
-        Creation.Creation_Page().click_creation_btn()
+        creation.creation_page().click_creation_btn()
         self.watch_device('允许|始终允许|取消')
-        Creation.Creation_Page().click_camera_btn()
+        creation.creation_page().click_camera_btn()
         self.screenshot()
         self.back()
         self.back()
@@ -88,20 +88,20 @@ class App_install(unittest.TestCase, BasePage):
     @testcase
     def test_05_click_view_pager_btn(self):
         '''次要功能位的点击操作'''
-        Creation.Creation_Page().click_creation_btn()
-        Creation.Creation_Page().click_view_pager_btn('相册MV')
+        creation.creation_page().click_creation_btn()
+        creation.creation_page().click_view_pager_btn('相册MV')
         self.back()
-        Creation.Creation_Page().click_view_pager_btn('美颜趣拍')
+        creation.creation_page().click_view_pager_btn('美颜趣拍')
         time.sleep(4)
         self.d(text='取消').click_exists(timeout=3)
         self.back()
-        Creation.Creation_Page().click_view_pager_btn('素材中心')
+        creation.creation_page().click_view_pager_btn('素材中心')
         time.sleep(2)
         self.back()
-        Creation.Creation_Page().click_view_pager_btn('新手教程')
+        creation.creation_page().click_view_pager_btn('新手教程')
         time.sleep(2)
         self.back()
-        Creation.Creation_Page().click_view_pager_btn('画中画编辑')
+        creation.creation_page().click_view_pager_btn('画中画编辑')
         time.sleep(2)
         self.screenshot()
 

@@ -6,7 +6,7 @@ from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
 
 
-class Community_Page(BasePage):
+class community_page(BasePage):
     '''社区首页,包含推荐页面操作'''
 
     @teststep
@@ -75,7 +75,7 @@ class Community_Page(BasePage):
         return self.d(resourceId="com.quvideo.xiaoying:id/fab_expand_menu_button").exists
 
 
-class Follow_Page(BasePage):
+class follow_page(BasePage):
     '''关注页面'''
 
     def get_headinfo(self, inst=1):
@@ -111,7 +111,7 @@ class Follow_Page(BasePage):
             self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title").click()
 
 
-class FeedVideo_Page(BasePage):
+class feedVideo_page(BasePage):
     '''沉浸Feed视频页面'''
 
     @teststep
@@ -284,7 +284,7 @@ class FeedVideo_Page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/btnMuteMode").click()
 
 
-class UserInfo_Page(BasePage):
+class userinfo_page(BasePage):
     '''用户详情 页面,包含他人主页 我的主页'''
 
     @teststep
@@ -438,7 +438,7 @@ if __name__ == '__main__':
     # print(UserInfo_Page().get_user_info("like"))
     for i in range(5):
         BasePage().swipe_up(steps=0.05)
-    print(UserInfo_Page().click_back_top_btn())
+    print(userinfo_page().click_back_top_btn())
 
 
 

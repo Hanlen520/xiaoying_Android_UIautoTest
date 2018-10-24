@@ -6,7 +6,7 @@ from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
 
 
-class Creation_Page(BasePage):
+class creation_page(BasePage):
     @teststep
     def wait_page(self):
         try:
@@ -97,5 +97,5 @@ if __name__ == '__main__':
 
     Log().set_logger('udid', './log.log')
     BasePage().set_driver('10.0.29.65')
-    Creation_Page().click_view_pager_btn('画中画拍')
+    creation_page().click_view_pager_btn('画中画拍')
 
