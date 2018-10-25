@@ -347,7 +347,7 @@ class BasePage(object):
         times = max_swipe
         for i in range(times):
             try:
-                time.sleep(0.1)
+                time.sleep(0.05)
                 if value.exists:
                     return value
                 else:

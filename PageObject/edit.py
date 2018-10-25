@@ -42,6 +42,15 @@ class edit_page(BasePage):
         cur_time = self.d(resourceId="com.quvideo.xiaoying:id/txtview_cur_time").get_text()
         total_time = self.d(resourceId="com.quvideo.xiaoying:id/txtview_duration").get_text()
         return cur_time, total_time
+    @teststep
+    def get_clip_time(self, inst=1):
+        clip_time = self.d(resourceId="com.quvideo.xiaoying:id/item_duration", instance=inst-1).get_text()
+        return clip_time
+
+    # def is_focused(self,inst=1):
+    #     focused = self.d(resourceId="com.quvideo.xiaoying:id/item_comtent", instance=inst-1).\
+    #         child(resourceId="com.quvideo.xiaoying:id/item_focus_layout").exists
+    #     return focused
 
     @teststep
     def select_seekbar_position(self, inst=5):
@@ -119,11 +128,13 @@ class edit_page(BasePage):
 
     @teststep
     def preview_swipe_left(self):
+        '''预览页右滑动'''
         ele = self.d(resourceId="com.quvideo.xiaoying:id/preview_layout")
         BasePage().swipe_left(ele)
 
     @teststep
     def preview_swipe_right(self):
+        '''预览页左滑动'''
         ele = self.d(resourceId="com.quvideo.xiaoying:id/preview_layout")
         BasePage().swipe_right(ele)
 
@@ -172,6 +183,7 @@ class edit_page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_alert_dialog_positive").click_exists(timeout=1)
 
 class fitler_page(BasePage):
+    '''滤镜操作页面'''
     @teststep
     def select_filter(self, text="原图"):
         '''选择滤镜卷，并点击展开滤镜卷'''
@@ -190,7 +202,7 @@ class fitler_page(BasePage):
         self.d(resourceId="com.quvideo.xiaoying:id/item_fitler_child_name", text=text).click()
 
     @teststeps
-    def select_filter_alpha(self,inst=50):
+    def select_filter_alpha(self, inst=50):
         '''
         设置滤镜程度 除了（0~10） 之间的的任意数字,5左右的数字存在一定的偏差
         :param inst: inst  0—~104之间任意间隔0.2的数字  exp 1。2、0.4、...1.8、9.8
@@ -202,6 +214,163 @@ class fitler_page(BasePage):
         print(bar)
         print(x, y)
         self.d.long_click(x, y)
+
+class scale_page(BasePage):
+    '''比例和背景操作页面'''
+    @teststep
+    def click_fit_btn(self):
+        '''点击缩放按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/iv_btn_fit").click()
+
+    @teststep
+    def click_play_btn(self):
+        '''点击播放按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/ib_play").click()
+
+    @teststep
+    def click_apply_all_btn(self):
+        '''点击应用全部镜头'''
+        self.d(resourceId="com.quvideo.xiaoying:id/apply_all_layout").click()
+
+    @teststeps
+    def select_scale(self,text="1:1"):
+        '''
+        选择画面比例
+        :param text: 比例对应的文字 例如 4:3  注意冒号
+        '''
+        self.d(resourceId="com.quvideo.xiaoying:id/hs_clip_ratios",scrollable=True).scroll.horiz.to(text=text)
+        self.d(resourceId="com.quvideo.xiaoying:id/ratio_title", text=text).click()
+
+    @teststep
+    def pinch_view(self, mode="in"):
+        '''缩放预览窗口'''
+        self.d(resourceId="com.quvideo.xiaoying:id/video_editor_preview").wait()
+        if mode == "in":
+            self.d(resourceId="com.quvideo.xiaoying:id/video_editor_preview").pinch_in(percent=13, steps=10)
+        elif mode == "out":
+            self.d(resourceId="com.quvideo.xiaoying:id/video_editor_preview").pinch_out(percent=66, steps=10)
+
+
+    @teststep
+    def select_blur_alpha(self,inst=50):
+        '''
+        设置背景模糊程度
+        :param inst: [0:99) 任意数字
+        :return:
+        '''
+        bar = self.d(resourceId="com.quvideo.xiaoying:id/seekbar_blur").info['bounds']
+        y = bar['top'] + (bar['bottom'] - bar['top']) / 2
+        unit = (bar['right'] - bar['left']) / 100
+        x = bar['left'] + inst * unit
+        self.d.long_click(x, y)
+
+    @teststep
+    def select_colour(self, inst=14):
+        '''
+        设置背景颜色
+        :param inst:[1:28]任意整数
+        :return:
+        '''
+        bar = self.d(resourceId="com.quvideo.xiaoying:id/multicolor_bar").info['bounds']
+        y = bar['top'] + (bar['bottom'] - bar['top']) / 2
+        unit = (bar['right'] - bar['left']) / 28
+        x = bar['left'] + inst * unit-4
+        self.d.long_click(x, y)
+
+    @teststep
+    def select_backpic_blur_alpha(self, inst=50):
+        '''
+        设置背景模糊程度
+        :param inst: [0:99) 任意数字
+        :return:
+        '''
+        bar = self.d(resourceId="com.quvideo.xiaoying:id/pic_seekbar_blur").info['bounds']
+        y = bar['top'] + (bar['bottom'] - bar['top']) / 2
+        unit = (bar['right'] - bar['left']) / 100
+        x = bar['left'] + inst * unit
+        self.d.long_click(x, y)
+    @teststep
+    def select_backpic(self, inst=1):
+        '''选择背景音乐'''
+        self.d(resourceId="com.quvideo.xiaoying:id/btn_expand").click()
+        self.d(resourceId="com.quvideo.xiaoying:id/collage_pic_item_cover",instance=inst-1).click()
+
+    @teststep
+    def click_none_pic_btn(self):
+        '''设定为默认背景'''
+        self.d(resourceId="com.quvideo.xiaoying:id/pic_item_none").click()
+
+    @teststep
+    def click_other_pic_btn(self):
+        '''点击其他相册'''
+        self.d(resourceId="com.quvideo.xiaoying:id/collage_pic_item_other_album").click()
+
+    @teststeps
+    def select_folder(self, name='系统相册'):
+        '''
+        相册文件夹选择
+        :param name: folder name textContains exp: '系统' will click folder'系统相册'
+        '''
+        self.d(resourceId="com.quvideo.xiaoying:id/rc_folder", scrollable=True).fling.toBeginning()
+        ele = self.d(resourceId="com.quvideo.xiaoying:id/rc_folder")
+        rect = self.find_element_by_swipe_up(value=self.d(textContains=name), element=ele, steps=0.2).info['bounds']
+        time.sleep(0.5)
+        print(rect)
+        x = (rect['right'] + rect['left']) / 2
+        print(self.d.window_size())
+        y = rect['top'] - self.d.window_size()[0] / 3
+        print(x, y)
+        self.d.long_click(x, y)
+
+    @teststep
+    def select_photo_clip(self, inst=1, preview=False):
+        '''
+        选择图片
+        :param inst: inst=n 点击第n个clips
+        :param preview: if True click gallery_preview_button
+        :return:
+        '''
+        if not preview:
+            self.d(resourceId="com.quvideo.xiaoying:id/img_click_mask", instance=inst - 1).click()
+        else:
+            self.d(resourceId="com.quvideo.xiaoying:id/img_click_mask", instance=inst - 1).sibling(
+                className="android.widget.RelativeLayout").click()
+
+class trim_cut_page(BasePage):
+    '''修剪操作页面'''
+    def click_trim_btn(self):
+        '''点击修剪按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/trim_button").click()
+
+    def click_cut_btn(self):
+        '''点击剪中间按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/cut_button").click()
+
+    def get_trim_time(self):
+        '''获取trim时长'''
+        trim_time = self.d(resourceId="com.quvideo.xiaoying:id/ve_split_right_time").get_text()
+        return trim_time
+
+    def trim_swipe(self):
+        '''左右滑动trim及微调trim，只有初次进入才能操作成功（trimbar无法定位）'''
+        print('original clip time is：%s 秒' % self.get_trim_time())
+        trim = self.d(resourceId="com.quvideo.xiaoying:id/ve_gallery").info['bounds']
+        unit = int(trim["right"]-trim["left"])/7
+        y = int(trim["top"]+(trim["bottom"]-trim["top"])/2)
+        self.d.swipe(int(trim["left"])+unit/4, y, int(trim["left"])+3*unit, y, duration=0.1)
+        print('after left_trim swipe clip time is：%s 秒' % self.get_trim_time())
+        edit_page().preview_swipe_left()
+        print(self.get_trim_time())
+        self.d.swipe(int(trim["right"])-unit/4, y, int(trim["right"])-3*unit, y, duration=0.1)
+        print('after right_trim swipe time is：%s 秒' % self.get_trim_time())
+        edit_page().preview_swipe_right()
+        print(self.get_trim_time())
+
+
+
+
+
+
 
 
 
@@ -217,21 +386,17 @@ class fitler_page(BasePage):
 
 if __name__ == '__main__':
     from Public.Log import Log
-
+    from PageObject import gallery
     Log().set_logger('udid', './log.log')
     BasePage().set_driver(None)
-    # Edit_Page().select_seekbar_position(5)
-    # Edit_Page().select_effect_edit_tool("配音和音效")
-    # Edit_Page().click_effect_play_btn()
-    # print(Edit_Page().get_effect_seek_time())
-    # Edit_Page().preview_swipe_left()
-    # Edit_Page().preview_swipe_right()
-    # Edit_Page().click_clip(1)
-    # Edit_Page().select_clip_edit_tool("镜头排序")
-    # Edit_Page().drag_clip(1, 8)
-    # edit_page().cancel_setting()
-    edit_page().select_clip_edit_tool("滤镜")
-    fitler_page().select_filter("Polaroid")
-    fitler_page().click_filter_btn("宽幅")
-    fitler_page().select_filter_alpha(26)
-    edit_page().effect_setting()
+    # scale_page().click_fit_btn()
+    # scale_page().select_scale("4:3")
+    # scale_page().pinch_view("out")
+    # scale_page().pinch_view("out")
+    # scale_page().pinch_view()
+    # scale_page().select_blur_alpha(99)
+    # scale_page().select_colour()
+    # scale_page().select_backpic(5)
+    # trim_cut_page().trim_swipe()
+    print(edit_page().is_focused(3))
+    BasePage().d.app_install()

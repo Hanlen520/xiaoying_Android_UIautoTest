@@ -57,11 +57,12 @@ class gallery_page(BasePage):
         print(x, y)
         self.d.long_click(x, y)
 
-    @teststep
-    def click_fo(self):
-        # self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).fling.toBeginning()
-        # self.d(resourceId="com.quvideo.xiaoying:id/rc_folder", scrollable=True).fling.toBeginning()
-        self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).scroll.to(text="微信")
+    # @teststep
+    # def click_fo(self,text =):
+    #     '''点击文件夹'''
+    #     # self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).fling.toBeginning()
+    #     # self.d(resourceId="com.quvideo.xiaoying:id/rc_folder", scrollable=True).fling.toBeginning()
+    #     self.d(resourceId="com.quvideo.xiaoying:id/gallery_viewpager", scrollable=True).scroll.to(text="微信")
 
     @teststep
     def select_video_clip(self, inst=1):
@@ -74,7 +75,7 @@ class gallery_page(BasePage):
     @teststep
     def select_photo_clip(self, inst=1, preview=False):
         '''
-
+        选择图片
         :param inst: inst=n 点击第n个clips
         :param preview: if True click gallery_preview_button
         :return:
