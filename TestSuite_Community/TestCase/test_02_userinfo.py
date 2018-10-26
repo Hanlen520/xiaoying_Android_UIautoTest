@@ -17,29 +17,30 @@ pkg_name = ReadConfig().get_pkg_name()
 class Community_UserInfo(unittest.TestCase, BasePage):
     '''社区相关 用户空间测试'''
 
-    @classmethod
-    @setupclass
-    def setUpClass(cls):
-        cls.d.app_stop_all()
-
-    @classmethod
-    @teardownclass
-    def tearDownClass(cls):
-        cls.d.app_stop("com.quvideo.xiaoying")
-
-    @setup
-    def setUp(self):
-        self.d.app_start(pkg_name)
-
-    @teardown
-    def tearDown(self):
-        self.d.app_stop(pkg_name)
+    # @classmethod
+    # @setupclass
+    # def setUpClass(cls):
+    #     cls.d.app_stop_all()
+    #
+    # @classmethod
+    # @teardownclass
+    # def tearDownClass(cls):
+    #     cls.d.app_stop("com.quvideo.xiaoying")
+    #
+    # @setup
+    # def setUp(self):
+    #     self.d.app_start(pkg_name)
+    #
+    # @teardown
+    # def tearDown(self):
+    #     self.d.app_stop(pkg_name)
 
     @testcase
     def test_01_getinfo(self):
-        '''可下拉刷新，且个人页数据加载显示正常'''
+        '''可下拉刷新，且个人页数据加载显示正常 ###查看截图'''
         creation.creation_page().click_my_btn()
-        self.swipe_down(steps=0.05)
+        self.swipe_down(steps=0.1)
+        time.sleep(1)
         info = str(community.userinfo_page().get_user_info("title"))
         print('userame  is \n%s' % info)
         self.screenshot()
@@ -50,29 +51,36 @@ class Community_UserInfo(unittest.TestCase, BasePage):
         creation.creation_page().click_my_btn()
         # time.sleep(5)  # 等待debug的 toast消失
         # 点击喜欢
+        print("click like btn")
         community.userinfo_page().select_tab(2)
         time.sleep(0.5)
-        self.assertTrue(community.userinfo_page().is_like_tab())
+        like = community.userinfo_page().is_like_tab()
+        self.assertTrue(like)
         # 点击作品
+        print("click works btn")
         community.userinfo_page().select_tab(1)
         time.sleep(0.5)
-        self.assertFalse(community.userinfo_page().is_like_tab())
+        like = community.userinfo_page().is_like_tab()
+        self.assertFalse(like)
 
         task = self.d(resourceId="com.quvideo.xiaoying:id/recyclerView")
         # 左滑
-        self.swipe_left(task, steps=0.05)
+        print("swipe_left")
+        self.swipe_left(task, steps=0.03)
         time.sleep(0.5)
-        self.assertTrue(community.userinfo_page().is_like_tab())
+        like = community.userinfo_page().is_like_tab()
+        self.assertTrue(like)
 
         # 右滑
-        self.swipe_right(task, steps=0.05)
+        print("swipe_rigth")
+        self.swipe_right(task, steps=0.03)
         time.sleep(0.5)
-        self.assertFalse(community.userinfo_page().is_like_tab())
-        self.screenshot()
+        like = community.userinfo_page().is_like_tab()
+        self.assertFalse(like)
 
     @testcase
     def test_03_back_top(self):
-        '''上移页面可收起个人信息栏，点击一键回顶部的按钮，可返回视频列表顶部'''
+        '''上移页面可收起个人信息栏，点击一键回顶部的按钮，可返回视频列表顶部  ##查看截图'''
         creation.creation_page().click_my_btn()
         for i in range(5):
             BasePage().swipe_up(steps=0.05)
@@ -82,12 +90,12 @@ class Community_UserInfo(unittest.TestCase, BasePage):
 
     @testcase
     def test_04_doubleclick_to_top(self):
-        '''双击我Tab均可返回当前页顶部并刷新；'''
+        '''点击击我Tab均可返回当前页顶部并刷新 ##查看截图'''
         creation.creation_page().click_my_btn()
         for i in range(5):
             BasePage().swipe_up(steps=0.05)
         self.screenshot()
-        creation.creation_page.click_my_btn()
+        creation.creation_page().click_my_btn()
         self.screenshot()
 
 
@@ -97,15 +105,15 @@ class Community_UserInfo(unittest.TestCase, BasePage):
 if __name__ == '__main__':
     from Public.Log import Log
     Log().set_logger('udid', './log.log')
-    BasePage().set_driver('10.0.29.65')
+    BasePage().set_driver(None)
     # d = BasePage().get_driver()
     # d.app_start("com.quvideo.xiaoying")
 
 
     suite = unittest.TestSuite()
     # suite.addTest(Community_UserInfo('test_01_getinfo'))
-    suite.addTest(Community_UserInfo('test_02_tab_action'))
-    suite.addTest(Community_UserInfo('test_03_back_top'))
+    suite.addTest(Community_UserInfo('test_01_getinfo'))
+    # suite.addTest(Community_UserInfo('test_03_back_top'))
 
     runner = unittest.TextTestRunner()
     runner.run(suite)

@@ -30,7 +30,7 @@ class creation_page(BasePage):
     @teststep
     def click_edit_btn(self):
         '''点击编辑按钮'''
-        self.d(resourceId="com.quvideo.xiaoying:id/btn1").click()
+        self.d(resourceId="com.quvideo.xiaoying:id/btn1").long_click()
 
     @teststep
     def click_camera_btn(self):
@@ -45,14 +45,17 @@ class creation_page(BasePage):
         :param text: 次要功能位置的text名称
         :return:
         '''
-        # self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).scroll.horiz.toBeginning()
-        self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).scroll.horiz.to(text=text)
-        if self.d(text=text).exists:
+        if self.d(text=text).wait(timeout=1):
             self.d(text=text).click()
             return True
         else:
-            print("找不到控件-->%s" % text)
-            return False
+            try:
+                self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).scroll.horiz.to(text=text)
+                self.d(text=text).click()
+                return True
+            except UiObjectNotFoundError:
+                print("找不到控件-->%s" % text)
+                return False
 
         # self.d(resourceId="com.quvideo.xiaoying:id/view_pager", scrollable=True).fling.horiz.toBeginning()
         # time.sleep(0.5)
@@ -80,22 +83,25 @@ class creation_page(BasePage):
     def click_find_btn(self):
         '''点击小影圈'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_find").click()
+        time.sleep(1)
 
     @teststep
     def click_creation_btn(self):
         '''点击创作按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_creation").click()
+        time.sleep(1)
 
     @teststep
     def click_my_btn(self):
         '''点击我的按钮'''
         self.d(resourceId="com.quvideo.xiaoying:id/img_studio").click()
+        time.sleep(1)
 
 
 if __name__ == '__main__':
     from Public.Log import Log
 
     Log().set_logger('udid', './log.log')
-    BasePage().set_driver('10.0.29.65')
-    creation_page().click_view_pager_btn('画中画拍')
+    BasePage().set_driver(None)
+    print(creation_page().click_view_pager_btn('素材中心'))
 
