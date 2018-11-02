@@ -4,6 +4,9 @@
 from Public.BasePage import BasePage
 from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
+from Public.Log import Log
+
+log = Log()
 
 
 class community_page(BasePage):
@@ -12,6 +15,7 @@ class community_page(BasePage):
     @teststep
     def click_search_btn(self):
         '''点击搜索按钮'''
+        log.i("点击搜索按钮")
         self.d(resourceId="com.quvideo.xiaoying:id/btn_search").click()
 
     @teststep
@@ -158,7 +162,6 @@ class feedVideo_page(BasePage):
             else:
                 return Exception('No download count')
 
-
     @teststep
     def get_current_time(self):
         '''获取当前播放进度时长'''
@@ -226,9 +229,10 @@ class feedVideo_page(BasePage):
         self.d(text=u"@", className="android.widget.TextView").click()
 
     @teststep
-    def commet_lick_btn_click(self,inst =1):
+    def commet_lick_btn_click(self, inst=1):
         '''点击评论中的点赞'''
-        self.d(resourceId="com.quvideo.xiaoying:id/commentLikeCount",instance=inst-1).click()
+        self.d(resourceId="com.quvideo.xiaoying:id/commentLikeCount", instance=inst - 1).click()
+
     @teststep
     def comment_reply(self, inst=1):
         '''点击评论 回复评论'''
@@ -315,12 +319,10 @@ class userinfo_page(BasePage):
             return self.d(resourceId="com.quvideo.xiaoying:id/user_follow_count").get_text()
         elif name == "work":
             return str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
-                          child(resourceId="com.quvideo.xiaoying:id/text_count", instance=0).get_text()).split(" ")[1]
+                       child(resourceId="com.quvideo.xiaoying:id/text_count", instance=0).get_text()).split(" ")[1]
         elif name == "like":
             return str(self.d(resourceId="com.quvideo.xiaoying:id/studio_view_pager_tab_view"). \
-                          child(resourceId="com.quvideo.xiaoying:id/text_count", instance=1).get_text()).split(" ")[1]
-
-
+                       child(resourceId="com.quvideo.xiaoying:id/text_count", instance=1).get_text()).split(" ")[1]
 
     @teststep
     def click_share_btn(self):
@@ -388,8 +390,7 @@ class userinfo_page(BasePage):
         选择作品或者喜欢
         :param inst: 1作品  2喜欢
         '''
-        self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=inst-1).click()
-
+        self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=inst - 1).click()
 
     @teststep
     def is_like_tab(self):
@@ -397,9 +398,8 @@ class userinfo_page(BasePage):
         是否在喜欢tab下
         :return: true false
         '''
-        return self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=1).\
+        return self.d(resourceId="com.quvideo.xiaoying:id/text_count", instance=1). \
             sibling(resourceId="com.quvideo.xiaoying:id/img_cursor_line").wait(timeout=3)
-
 
     @teststep
     def click_back_top_btn(self):
@@ -409,37 +409,205 @@ class userinfo_page(BasePage):
             return True
         else:
             return False
+
+
+class fans_follow_list_page(BasePage):
+    '''粉丝列表\关注列表页面'''
+
+    @teststep
+    def click_avatar(self, inst=1):
+        log.i('点击列表头像')
+        self.d(resourceId="com.quvideo.xiaoying:id/avatar_img", instance=inst - 1).click()
+
+    @teststeps
+    def click_follow_btn(self, inst=1):
+        log.i('关注/取消关注操作')
+        self.d(resourceId="com.quvideo.xiaoying:id/btn_follow_state", instance=inst - 1).click()
+        self.d(resourceId="com.quvideo.xiaoying:id/buttonDefaultPositive").click_exists()
+
+    @teststep
+    def get_info(self, inst=1):
+        '''获取列表用户信息'''
+        name = self.d(resourceId="com.quvideo.xiaoying:id/fans_name", instance=inst - 1).get_text()
+        if self.d(resourceId="com.quvideo.xiaoying:id/fans_desc", instance=inst - 1).exists:
+            desc = self.d(resourceId="com.quvideo.xiaoying:id/fans_desc", instance=inst - 1).get_text()
+        else:
+            desc = None
+        follow_state = self.d(resourceId="com.quvideo.xiaoying:id/btn_follow_state", instance=inst - 1).get_text()
+        return name, desc, follow_state
+
+
+class notify_page(BasePage):
+    '''消息页面'''
+
+    def select_tab(self, inst=1):
+        '''
+        点击消息也顶部tab 动态、消息
+        :param inst: 1-动态  2-消息
+        '''
+        self.d(resourceId="com.quvideo.xiaoying:id/text_viewpager_tab", instance=inst - 1).click()
+
+    @teststep
+    def get_imgicon_info(self, inst=1):
+        '''
+        获取消息下按钮名称及未读数
+        :param inst: 按钮数
+        :return: exp：('赞', 0)
+        '''
+        ele = self.d(resourceId="com.quvideo.xiaoying:id/imgIcon", instance=inst - 1)
+        name = ele.sibling(className="android.widget.TextView")[1].get_text()
+        count = ele.sibling(className="android.widget.TextView").get_text()
+        try:
+            count = int(ele.sibling(className="android.widget.TextView").get_text())
+        except:
+            return count, 0
+        else:
+            return name, count
+
+    @teststep
+    def click_imgicon_btn(self, inst=1):
+        '''点击消息下的点赞、评论、@我、粉丝的图标按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/imgIcon", instance=inst - 1).click()
+
+    @teststep
+    def click_message_img_avatar(self, inst=1):
+        '''点击消息列表中的头像'''
+        self.d(resourceId="com.quvideo.xiaoying:id/message_img_avatar", instance=inst - 1).click()
+
+    @teststep
+    def click_message_video_thumb(self, inst=1):
+        '''点击消息列表中的视频缩略图'''
+        self.d(resourceId="com.quvideo.xiaoying:id/message_video_thumb", instance=inst - 1).click()
+
+    @teststep
+    def get_message_info(self, inst=1):
+        '''
+        获取消息列表信息，获取动态页面信息
+        :return: name, sub, msg_time
+        '''
+        name = self.d(resourceId="com.quvideo.xiaoying:id/text_name", instance=inst - 1).get_text()
+        if self.d(resourceId="com.quvideo.xiaoying:id/text_sub").exists:
+            sub = self.d(resourceId="com.quvideo.xiaoying:id/text_sub", instance=inst - 1).get_text()
+        else:
+            sub = None
+        msg_time = self.d(resourceId="com.quvideo.xiaoying:id/message_time", instance=inst - 1).get_text()
+        return name, sub, msg_time
+
+    @teststep
+    def get_fans_message_info(self, inst=1):
+        '''获取粉丝消息列表信息'''
+        name = self.d(resourceId="com.quvideo.xiaoying:id/msg_fans_name", instance=inst - 1).get_text()
+        msg_time = self.d(resourceId="com.quvideo.xiaoying:id/msg_fans_time", instance=inst - 1).get_text()
+        return name, msg_time
+
+    @teststep
+    def click_fans_message_avatar(self, inst=1):
+        '''点击粉丝消息头像'''
+        self.d(resourceId="com.quvideo.xiaoying:id/msg_fans_avatar_img", instance=inst - 1).click()
+
+    @teststep
+    def click_fans_message_follow_btn(self, inst=1):
+        '''点击粉丝消息关注按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/msg_follow_state", instance=inst - 1).click()
+
+    # @teststep
+    # def get_friends_info(self,inst=1):
+    #     self.
+
+
+class search_page(BasePage):
+    '''搜索页面'''
+
+    @teststeps
+    def search_keyword(self, text):
+        '''搜索页输入关键字搜索'''
+        self.d(resourceId="com.quvideo.xiaoying:id/edittext_search").click()
+        self.d.clear_text()
+        self.d.send_keys(text)  # adb广播输入
+        # self.d.clear_text()  # 清除输入框所有内容(Require android-uiautomator.apk version >= 1.0.7)
+        self.d.send_action("search")
+        time.sleep(2)
+
+    @teststep
+    def click_search_results_tab(self, inst=2):
+        '''
+        搜索后点击对于的搜索结果tab 默认点击 用户tab
+        :param text: 1-综合、2-用户、3-话题、4-视频
+        :return:
+        '''
+        self.d(resourceId="com.quvideo.xiaoying:id/text_viewpager_tab", instance=inst - 1).click()
+
+    @teststep
+    def clear_search_text(self):
+        '''点击搜索框的×'''
+        self.d(resourceId="com.quvideo.xiaoying:id/edittext_search").click()
+        self.d(resourceId="com.quvideo.xiaoying:id/btn_clear_edit").click()
+
+    @teststeps
+    def clear_search_history(self):
+        self.d(text=u"我搜过的").sibling(className="android.widget.ImageView").click()
+        self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_alert_dialog_positive").click_exists()
+
+    @teststep
+    def click_cancel_btn(self):
+        '''点击取消按钮'''
+        self.d(resourceId="com.quvideo.xiaoying:id/btn_back").click()
+
+    @teststep
+    def get_search_history(self):
+        '''
+        获取我搜索过的关键字
+        :return: list exp:['嘻嘻嘻', '哈哈哈']
+        '''
+
+        his_list = []
+        count = int(self.d(resourceId="com.quvideo.xiaoying:id/tagSearchSetView").child(
+            className="android.widget.TextView").count)
+        for i in range(count):
+            his_list.append(self.d(resourceId="com.quvideo.xiaoying:id/tagSearchSetView").
+                            child(className="android.widget.TextView")[i].get_text())
+        return his_list
+
+    @teststep
+    def get_hot_search(self):
+        '''
+        获取热门搜索的title
+        :return: list exp：['朗读者行动', '笑掉大门牙', '神曲', '颜值担当', '舞分之一']
+        '''
+        hot_list = []
+        count = int(self.d(resourceId="com.quvideo.xiaoying:id/recyclerView").child(
+            className="android.widget.LinearLayout").count)
+        for i in range(count):
+            hot_list.append(self.d(resourceId="com.quvideo.xiaoying:id/recyclerView").child(
+                className="android.widget.LinearLayout")[i].child(
+                className="android.widget.TextView")[1].get_text())
+        return hot_list
+
+    @teststep
+    def click_recommend_avatar(self, inst=1):
+        '''
+        点击推荐的头像并返回 推荐账号的c 名称及tag
+        :param inst: 推荐的顺序 默认第一个
+        :return:exp：('环球梦游记', '女神')
+        '''
+        name = self.d(resourceId="com.quvideo.xiaoying:id/textview_name", instance=inst - 1).get_text()
+        tag = self.d(resourceId="com.quvideo.xiaoying:id/textview_tag1", instance=inst - 1).get_text()
+        self.d(resourceId="com.quvideo.xiaoying:id/img_avatar", instance=inst - 1).click()
+        return name, tag
+
+
 if __name__ == '__main__':
     from Public.Log import Log
+
     Log().set_logger('udid', './log.log')
-    BasePage().set_driver('10.0.29.65')
-    # Community_Page().select_Bar(2)
-    # print(UserInfo_Page().select_tab(2))
-    # # print(UserInfo_Page().get_user_info())
-    # print(UserInfo_Page().is_like_tab())
-    # print(UserInfo_Page().is_like_tab())
-    # print(FeedVideo_Page().get_video_info("title"))
-    #     # print(FeedVideo_Page().get_video_info("description"))
-    #     # print(FeedVideo_Page().get_video_info("play"))
-    #     #
-    #     # print(FeedVideo_Page().get_video_info("like"))
-    #     # print(FeedVideo_Page().get_video_info("comment"))
-    #     #
-    #     # print(FeedVideo_Page().get_video_info("download"))
-    #     # print(FeedVideo_Page().get_video_info("share"))
-    #     # print(FeedVideo_Page().get_current_time())
+    BasePage().set_driver(None)
 
-    # print(UserInfo_Page().get_user_info("title"))
-    # print(UserInfo_Page().get_user_info("id"))
-    # print(UserInfo_Page().get_user_info("zan"))
-    # print(UserInfo_Page().get_user_info("fans"))
-    # print(UserInfo_Page().get_user_info("follow"))
-    # print(UserInfo_Page().get_user_info("work"))
-    # print(UserInfo_Page().get_user_info("like"))
-    for i in range(5):
-        BasePage().swipe_up(steps=0.05)
-    print(userinfo_page().click_back_top_btn())
-
-
-
-
+    # search_page().search_keyword('哈哈哈')
+    # search_page().search_keyword('嘻嘻嘻')
+    # search_page().click_search_results_tab('视频')
+    # inf=search_page().get_search_history()
+    # print(inf)
+    # BasePage().d(text=inf[0]).click()
+    # search_page().clear_search_text()
+    # fan_list_page().click_fan()
+    print(fan_list_page().get_fan_info())

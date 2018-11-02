@@ -33,7 +33,7 @@ class App_install(unittest.TestCase, BasePage):
     def tearDown(self):
         self.d.app_stop(pkg_name)
 
-    @unittest.skip
+
     @testcase
     def test_01_install(self):
         '''小影安装，并允许各种权限'''
@@ -49,7 +49,8 @@ class App_install(unittest.TestCase, BasePage):
         time.sleep(2)
         self.watch_device('允许|始终允许|取消|立即删除')   #华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
-        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=20)
+        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=10)
+        self.d(resourceId="com.quvideo.xiaoying:id/imgview_close_btn").click_exists(timeout=5)
         self.unwatch_device()
         creation.creation_page().click_my_btn()
         self.screenshot()
@@ -64,10 +65,11 @@ class App_install(unittest.TestCase, BasePage):
         print("登录成功")
         # 进入创作页,点击编辑
         creation.creation_page().click_creation_btn()
-        creation.creation_page().click_edit_btn()
-        if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
+        while self.d(resourceId="com.quvideo.xiaoying:id/btn_vip").wait(timeout=2):
             creation.creation_page().click_edit_btn()
-        self.assertTrue(self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait(timeout=3))
+        # if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
+        #     creation.creation_page().click_edit_btn()
+        self.assertTrue(self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait(timeout=5))
         print("打开gallery成功")
 
 
@@ -109,7 +111,7 @@ class App_install(unittest.TestCase, BasePage):
         creation.creation_page().click_view_pager_btn('素材中心')
         time.sleep(2)
         self.back()
-        creation.creation_page().click_view_pager_btn('画中画')
+        creation.creation_page().click_view_pager_btn('画中画编辑')
         time.sleep(2)
         self.screenshot()
 
@@ -123,9 +125,10 @@ if __name__ == '__main__':
     Log().set_logger('udid', './log.log')
     BasePage().set_driver(None)
     suite = unittest.TestSuite()
+    suite.addTest(App_install('test_01_install'))
     # suite.addTest(App_install('test_02_login'))
     # suite.addTest(App_install('test_03_click_camera_btn'))
-    suite.addTest(App_install('test_04_click_view_pager_btn'))
+    # suite.addTest(App_install('test_04_click_view_pager_btn'))
     runner = unittest.TextTestRunner()
     runner.run(suite)
 

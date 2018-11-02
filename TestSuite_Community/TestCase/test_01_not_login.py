@@ -12,8 +12,8 @@ apk_url = ReadConfig().get_apk_url()
 apk = get_apk()
 pkg_name = ReadConfig().get_pkg_name()
 
-@unittest.skip
-class Community_Not_Login(unittest.TestCase, BasePage):
+# @unittest.skip
+class community_not_login(unittest.TestCase, BasePage):
     '''社区相关 账号未登录'''
 
     @classmethod
@@ -34,35 +34,26 @@ class Community_Not_Login(unittest.TestCase, BasePage):
     def tearDown(self):
         self.d.app_stop(pkg_name)
 
-    @unittest.skip
+    # @unittest.skip
     @testcase
     def test_01_install(self):
         '''小影安装，并允许各种权限'''
         self.d.app_uninstall(pkg_name)
+        log.i('下载安装最新的apk')
+        download_apk()
         self.local_install(apk['apk_path'])
         time.sleep(2)
         self.watch_device('允许|始终允许|取消|立即删除')  # 华为删除app后弹出清理弹窗
         self.d.app_start(pkg_name)
-        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=20)
+        self.d(resourceId="com.quvideo.xiaoying:id/wel_skip").click_exists(timeout=10)
+        self.d(resourceId="com.quvideo.xiaoying:id/imgview_close_btn").click_exists(timeout=5)
         self.unwatch_device()
 
         creation.creation_page().click_creation_btn()
-        # # 进入gallery
-        # Creation.Creation_Page().click_edit_btn()
-        # if self.d(resourceId="com.quvideo.xiaoying:id/vip_home_help_dialog_skip").click_exists(timeout=3):
-        #     Creation.Creation_Page().click_edit_btn()
-        # self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait()
-        # self.back()
-        # # 进入camera,允许权限
-        # self.watch_device('允许|始终允许|取消')
-        # Creation.Creation_Page().click_camera_btn()
-        # time.sleep(2)
-        # self.back()
-        # self.d(text='取消').click_exists(timeout=3)
-        # self.unwatch_device()
+
 
     @testcase
-    def test_02_Jump_login(self):
+    def test_02_jump_login(self):
         '''未登录，评论@、点赞评论、回复评论、转发、关注、私信、拉黑 均应弹出登录框'''
         # '''未登录，点击评论、回复、点赞评论、评论@、关注、转发、拉黑、私信、参加活动、上传、描述@、登录等均应弹出登录框'''
         creation.creation_page().click_find_btn()
@@ -131,6 +122,6 @@ if __name__ == '__main__':
     Log().set_logger('udid', './log.log')
     BasePage().set_driver('10.0.29.65')
     suite = unittest.TestSuite()
-    suite.addTest(Community_Not_Login('test_02_Jump_login'))
+    suite.addTest(community_not_login('test_02_jump_login'))
     runner = unittest.TextTestRunner()
     runner.run(suite)
