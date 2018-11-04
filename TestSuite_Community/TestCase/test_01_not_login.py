@@ -12,7 +12,7 @@ apk_url = ReadConfig().get_apk_url()
 apk = get_apk()
 pkg_name = ReadConfig().get_pkg_name()
 
-# @unittest.skip
+
 class community_not_login(unittest.TestCase, BasePage):
     '''社区相关 账号未登录'''
 
@@ -34,7 +34,7 @@ class community_not_login(unittest.TestCase, BasePage):
     def tearDown(self):
         self.d.app_stop(pkg_name)
 
-    # @unittest.skip
+
     @testcase
     def test_01_install(self):
         '''小影安装，并允许各种权限'''

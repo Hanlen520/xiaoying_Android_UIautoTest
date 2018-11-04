@@ -10,7 +10,7 @@ from PageObject import creation,camera,login,gallery
 from Public.Test_data import *
 
 pkg_name = ReadConfig().get_pkg_name()
-
+@unittest.skip
 class Gallery_Action(unittest.TestCase, BasePage):
     '''gallery的测试'''
     @setup

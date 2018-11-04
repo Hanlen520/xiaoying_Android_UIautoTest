@@ -12,7 +12,7 @@ apk_url = ReadConfig().get_apk_url()
 pkg_name = ReadConfig().get_pkg_name()
 
 
-
+@unittest.skip
 class App_install(unittest.TestCase, BasePage):
     '''小影安装测试'''
     @classmethod
@@ -84,20 +84,6 @@ class App_install(unittest.TestCase, BasePage):
     #         creation.creation_page().click_edit_btn()
     #     self.d(resourceId="com.quvideo.xiaoying:id/gallery_chooser_layout").wait()
     #     self.screenshot()
-
-
-    @testcase
-    def test_03_click_camera_btn(self):
-        '''点击拍摄按钮'''
-        creation.creation_page().click_creation_btn()
-        self.watch_device('允许|始终允许|取消')
-        creation.creation_page().click_camera_btn()
-        self.screenshot()
-        self.back()
-        self.back()
-        self.d(text='取消').click_exists(timeout=3)
-        self.unwatch_device()
-
 
     @testcase
     def test_04_click_view_pager_btn(self):

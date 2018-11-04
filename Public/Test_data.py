@@ -53,7 +53,8 @@ def get_apk(url='http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.htm
     :param keyword: 匹配的关键字
     :return: 返回apk的参数url apk_name apk_path html
     '''
-    folder = './apk/'
+    folder = os.path.join(os.getcwd(), 'apk')
+    print(folder)
     if not os.path.exists(folder):
         os.mkdir(folder)
     else:
@@ -62,8 +63,8 @@ def get_apk(url='http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.htm
     soup = BeautifulSoup(html.text, "lxml")
     tmp = soup.find(href=re.compile(keyword))  # 获取下载链接
     apk = {'url': tmp.get('href'),
-           'apk_name': tmp.text,
-           'apk_path': folder+tmp.text,
+           'apk_name': tmp.get('href').split('/')[-1].replace(':', '_'),
+           'apk_path': os.path.join(folder, tmp.get('href').split('/')[-1].replace(':', '_')),
            'html': tmp}
     return apk
 

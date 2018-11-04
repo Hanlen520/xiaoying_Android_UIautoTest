@@ -176,6 +176,7 @@ class BasePage(object):
         如果存在元素则自动点击
         :param keyword: exp: keyword="yes|允许|好的|跳过"
         '''
+        cls.d.watchers.remove()
         cls.d.watchers.watched = False
         for i in keyword.split("|"):
             cls.d.watcher(i).when(text=i).click(text=i)
@@ -186,6 +187,7 @@ class BasePage(object):
     def unwatch_device(cls):
         '''关闭watcher '''
         print('Stop all watcher')
+        cls.d.watchers.remove()
         cls.d.watchers.watched = False
 
     @classmethod
@@ -207,7 +209,7 @@ class BasePage(object):
         '''截图并打印特定格式的输出，保证用例显示截图'''
         date_time = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
         screenshot_name = cls.__qualname__ + '-' + date_time + '.PNG'
-        path = ReportPath().get_path() + '/' + screenshot_name
+        path = os.path.join(ReportPath().get_path(), screenshot_name)
         cls.d.screenshot(path)
         print('IMAGE:' + screenshot_name)
 
@@ -382,8 +384,8 @@ class BasePage(object):
 
 
 
-
-if __name__ == '__main__':
-    url = 'http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html'
-    apk_path =download_apk(url)
-    print(apk_path)
+#
+# if __name__ == '__main__':
+#     url = 'http://www1.xiaoying.co/Android/vivavideo/vivavideo_install.html'
+#     apk_path =download_apk(url)
+#     print(apk_path)

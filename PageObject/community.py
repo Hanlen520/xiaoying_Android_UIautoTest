@@ -20,99 +20,158 @@ class community_page(BasePage):
 
     @teststep
     def click_message_btn(self):
-        '''点击消息按钮'''
+        log.i('点击消息按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/btn_message").click()
 
     @teststep
     def select_Bar(self, inst=1):
-        '''
-        点击ActionBar上的 关注、推荐、发现
-        :param inst: 1-关注，2-推荐，3-发现
-        :return:
-        '''
+        log.i('1-关注，2-推荐，3-发现，点击 %s' % inst)
         self.d(resourceId="android:id/text1", instance=inst - 1).click()
 
     @teststep
     def click_label(self, title):
-        '''点击推荐页下的标签'''
+        log.i('点击推荐页下的标签')
         self.d(resourceId="com.quvideo.xiaoying:id/recyclerViewCategory").child(text=title).click()
 
     @teststep
     def select_video_thumb(self, inst=1):
-        '''
-        点击推荐页内的视频
-        :param inst: 点击视频的顺序，ins=1 点击页面第一个视频
-        :return: None
-        '''
+        log.i('点击推荐页内的第%s个视频' % inst)
         self.d(resourceId="com.quvideo.xiaoying:id/img_video_thumb", className="android.widget.ImageView",
                instance=inst - 1).click()
 
     @teststep
     def get_videolike_count(self, inst=1):
-        '''
-        获取推荐页面下单个视频的点赞数
-        :param inst: 视频的顺序，inst=1 默认第一个
-        :return: like_count
-        '''
+        log.i('获取推荐页面下第%s个视频的点赞数' % inst)
         like_count = self.d(resourceId="com.quvideo.xiaoying:id/thumb_layout",
                             className="android.widget.RelativeLayout",
                             instance=inst - 1).child(resourceId="com.quvideo.xiaoying:id/text_like_count").get_text()
+        log.i('点赞数为 %s' % like_count)
         return like_count
 
     @teststep
     def select_fab_menu(self, inst=1):
-        '''
-        点击添加按钮，选择拍摄或打开相册
-        :param inst: ins=1 拍摄； inst=2 相册
-        :return:
-        '''
+        log.i('添加按钮，选择1-拍摄,2-相册,点击%s' % inst)
         self.d(resourceId="com.quvideo.xiaoying:id/fab_expand_menu_button").click()
         self.d(resourceId="com.quvideo.xiaoying:id/viva_float_btn_img", className="android.widget.ImageView",
                instance=inst - 1).click()
 
     @teststep
     def fab_menu_exists(self):
-        '''
-        检查添加按钮是否存在
-        :return:
-        '''
+        log.i('检查添加按钮是否存在')
         return self.d(resourceId="com.quvideo.xiaoying:id/fab_expand_menu_button").exists
 
 
-class follow_page(BasePage):
-    '''关注页面'''
+class video_list_page(BasePage):
+    '''关注页面、个人详情视频列表页面'''
 
+    @teststep
     def get_headinfo(self, inst=1):
         '''
         获取视频信息
         :param inst: viode的顺序 默认第一个 inst=1
         :return: nickname, public_time, play_count
         '''
+        log.i('获取视频列表页面第%s个视频的信息' % inst)
         nickname = self.d(resourceId="com.quvideo.xiaoying:id/videocard_id", instance=inst - 1). \
             child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_owner_nickname").get_text()
         public_time = self.d(resourceId="com.quvideo.xiaoying:id/videocard_id", instance=inst - 1). \
             child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_public_time").get_text()
         play_count = self.d(resourceId="com.quvideo.xiaoying:id/videocard_id", instance=inst - 1). \
             child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_play_count").get_text()
-        videotitle = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title",
-                            instance=inst - 1).get_text()
+        if self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title", instance=inst - 1).exists:
+            videotitle = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title",
+                                instance=inst - 1).get_text()
+        else:
+            videotitle = None
         # like_count = self.d(resourceId="com.quvideo.xiaoying:id/videocard_id", instance=inst - 1). \
         #     child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_like_count").get_text()
+        log.i('用户名：%s ；发布时间：%s ；播放数：%s ；视频标题：%s ' % (nickname, public_time, play_count, videotitle))
         return nickname, public_time, play_count, videotitle
 
+    @teststep
     def click_nickname(self, name=None):
-        '''点击用户名'''
+        log.i('点击用户名,跳转到用户详情页面')
         if name:
             self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_owner_nickname", text=name).click()
         else:
             self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_owner_nickname").click()
 
-    def click_videotitle(self, title=None):
-        '''点击视频标题'''
+    @teststep
+    def click_video_title(self, title=None):
+        log.i('点击视频标题,跳转到视频详情页面')
         if title:
             self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title", text=title).click()
         else:
             self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_card_title").click()
+
+    @teststep
+    def click_video_detail_head(self, inst=1):
+        log.i('点击第%s个视频顶部，跳转到视频详情页面' % inst)
+        self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_video_detail_head_layout", instance=inst - 1).click()
+
+    def swipe_to_video_bottom_layout(self):
+        '''上滑到视频底部 直到出分享按钮'''
+        self.find_element_by_swipe_up(self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_share_count"), steps=0.5)
+
+    def click_like_btn(self):
+        log.i('点击点赞按钮')
+        self.swipe_to_video_bottom_layout()
+        self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_layout_like").click()
+
+    def get_like_count(self):
+        log.i('获取点赞数')
+        self.swipe_to_video_bottom_layout()
+        if self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_layout_like").\
+            child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_like_count").exists:
+            count = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_layout_like").\
+                child(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_like_count").get_text()
+        else:
+            count = 0
+        log.i('点赞数：%s' % count)
+        return int(count)
+
+    def click_comment_btn(self):
+        log.i('点击评论按钮')
+        self.swipe_to_video_bottom_layout()
+        self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_comment").click()
+
+    def get_comment_count(self):
+        log.i('获取评论数')
+        self.swipe_to_video_bottom_layout()
+        count = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_comment").get_text()
+        if count:
+            pass
+        else:
+            count = 0
+        log.i('评论数：%s' % count)
+        return int(count)
+
+    def video_download(self):
+        log.i('点击下载按钮')
+        self.swipe_to_video_bottom_layout()
+        if self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_download").exists:
+            self.watch_device('确认')
+            self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_text_download").click()
+            toast1 = self.d.toast.get_message(1, 4)
+            log.i('toast is %s' % toast1)
+            self.unwatch_device()
+        else:
+            log.i('视频不支持下载')
+
+    def get_download_count(self):
+        log.i('获取视频下载数')
+        self.swipe_to_video_bottom_layout()
+        if self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_download_count").exists:
+            count = self.d(resourceId="com.quvideo.xiaoying:id/xiaoying_com_download_count").get_text()
+        else:
+            count =0
+        log.i('下载数：%s' % count)
+        return int(count)
+
+
+
+
+
 
 
 class feedVideo_page(BasePage):
@@ -601,6 +660,7 @@ if __name__ == '__main__':
 
     Log().set_logger('udid', './log.log')
     BasePage().set_driver(None)
+    # BasePage().d.debug=True
 
     # search_page().search_keyword('哈哈哈')
     # search_page().search_keyword('嘻嘻嘻')
@@ -610,4 +670,12 @@ if __name__ == '__main__':
     # BasePage().d(text=inf[0]).click()
     # search_page().clear_search_text()
     # fan_list_page().click_fan()
-    print(fan_list_page().get_fan_info())
+    # print(fan_list_page().get_fan_info())
+    # video_list_page().get_headinfo()
+    # video_list_page().click_nickname()
+    # video_list_page().get_like_count()
+    # video_list_page().click_like_btn()
+    # video_list_page().get_like_count()
+    # video_list_page().get_download_count()
+    video_list_page().video_download()
+    # BasePage().d.click(507.0, 1852.0)

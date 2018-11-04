@@ -60,8 +60,9 @@ def create_statistics_report(runs,title=None):
     report_path_list = []
     for run in runs:
         tmp_dic = {}
-        tmp_dic['path'] = re.findall("./TestReport/(.+$)", run.get_path())[0] + "/TestReport.html"
-        tmp_dic['name'] = run.get_device()['model'] + "自动化测试报告"
+        # tmp_dic['path'] = re.findall("./TestReport/(.+$)", run.get_path())[0] + "/TestReport.html"
+        tmp_dic['path'] = os.path.split(run.get_path())[1] + "/TestReport.html"
+        tmp_dic['name'] = run.get_device()['model'] + "测试报告"
         tmp_dic.update(_get_report_info(run))
         report_path_list.append(tmp_dic)
     create_index_html(report_path_list,title=title)

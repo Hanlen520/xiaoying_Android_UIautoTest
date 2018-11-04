@@ -4,9 +4,11 @@
 from Public.BasePage import BasePage
 from Public.Decorator import *
 from uiautomator2 import UiObjectNotFoundError
-
+from Public.Log import Log
+log = Log()
 
 class creation_page(BasePage):
+    '''创作页首页'''
     @teststep
     def wait_page(self):
         try:
@@ -19,22 +21,22 @@ class creation_page(BasePage):
 
     @teststep
     def click_vip_btn(self):
-        '''点击VIP按钮'''
+        log.i('点击VIP按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/btn_vip").click()
 
     @teststep
     def click_ad_btn(self):
-        '''点击广告按钮'''
+        log.i('点击广告按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/btn_shuffle").click()
 
     @teststep
     def click_edit_btn(self):
-        '''点击编辑按钮'''
+        log.i('点击编辑按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/btn1").long_click()
 
     @teststep
     def click_camera_btn(self):
-        '''点击拍摄按钮'''
+        log.i('点击拍摄按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/btn2").click()
         time.sleep(4)  # 等待相机加载完成
 
@@ -45,6 +47,7 @@ class creation_page(BasePage):
         :param text: 次要功能位置的text名称
         :return:
         '''
+        log.i('查找次要功能位 %s 并进行点击操作'% text)
         if self.d(text=text).wait(timeout=1):
             self.d(text=text).click()
             return True
@@ -68,7 +71,7 @@ class creation_page(BasePage):
 
     @teststep
     def click_more_btn(self):
-        '''点击更多草稿'''
+        log.i('点击更多草稿')
         self.d(resourceId="com.quvideo.xiaoying:id/btn_more").click()
 
     @teststep
@@ -77,23 +80,24 @@ class creation_page(BasePage):
         点击我的工作室的view 默认第一个
         :param inst: 0为第一个view 以此类推 1、2、3--> 一二三
         '''
+        log.i('点击我的工作室第%s个草稿')
         self.d(resourceId="com.quvideo.xiaoying:id/layout_draft_item").child(className='android.widget.ImageView')[inst-1].click()
 
     @teststep
     def click_find_btn(self):
-        '''点击小影圈'''
+        log.i('点击小影圈')
         self.d(resourceId="com.quvideo.xiaoying:id/img_find").click()
         time.sleep(1)
 
     @teststep
     def click_creation_btn(self):
-        '''点击创作按钮'''
+        log.i('点击创作按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/img_creation").click()
         time.sleep(1)
 
     @teststep
     def click_my_btn(self):
-        '''点击我的按钮'''
+        log('点击我的按钮')
         self.d(resourceId="com.quvideo.xiaoying:id/img_studio").click()
         time.sleep(1)
 
